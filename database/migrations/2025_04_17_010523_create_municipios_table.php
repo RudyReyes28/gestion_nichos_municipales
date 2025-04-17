@@ -1,0 +1,195 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        /*
+        CREATE TABLE MUNICIPIO (
+        id_municipio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        id_departamento INT NOT NULL,
+        nombre VARCHAR(100) NOT NULL,
+        FOREIGN KEY (id_departamento) REFERENCES DEPARTAMENTO(id_departamento)
+        );
+
+        */
+        Schema::create('municipio', function (Blueprint $table) {
+            $table->id('id_municipio')->autoIncrement()->primary();
+            $table->unsignedBigInteger('id_departamento');
+            $table->string('nombre', 100);
+            $table->foreign('id_departamento')->references('id_departamento')->on('departamento')->onDelete('cascade');
+        });
+
+        DB::table('municipio')->insert([
+            ['id_departamento' => 1, 'nombre' => 'Cobán'],
+            ['id_departamento' => 1, 'nombre' => 'San Pedro Carchá'],
+            ['id_departamento' => 1, 'nombre' => 'Santa Cruz Verapaz'],
+            ['id_departamento' => 1, 'nombre' => 'Tactic'],
+            ['id_departamento' => 1, 'nombre' => 'San Juan Chamelco'],
+            ['id_departamento' => 1, 'nombre' => 'Lanquín'],
+            ['id_departamento' => 1, 'nombre' => 'San Cristóbal Verapaz'],
+            ['id_departamento' => 1, 'nombre' => 'Raxruhá'],
+            ['id_departamento' => 2, 'nombre' => 'Salamá'],
+            ['id_departamento' => 2, 'nombre' => 'Granados'],
+            ['id_departamento' => 2, 'nombre' => 'San Miguel Chicaj'],
+            ['id_departamento' => 2, 'nombre' => 'Rabinal'],
+            ['id_departamento' => 2, 'nombre' => 'Cubulco'],
+            ['id_departamento' => 2, 'nombre' => 'San Jerónimo'],
+            ['id_departamento' => 2, 'nombre' => 'Purulhá'],
+            ['id_departamento' => 3, 'nombre' => 'Chimaltenango'],
+            ['id_departamento' => 3, 'nombre' => 'San José Poaquil'],
+            ['id_departamento' => 3, 'nombre' => 'San Martín Jilotepeque'],
+            ['id_departamento' => 3, 'nombre' => 'Santa Apolonia'],
+            ['id_departamento' => 3, 'nombre' => 'Tecpán Guatemala'],
+            ['id_departamento' => 3, 'nombre' => 'Patzún'],
+            ['id_departamento' => 3, 'nombre' => 'Pochuta'],
+            ['id_departamento' => 3, 'nombre' => 'San Andrés Itzapa'],
+            ['id_departamento' => 3, 'nombre' => 'Acatenango'],
+            ['id_departamento' => 3, 'nombre' => 'Chimaltenango'],
+            ['id_departamento' => 3, 'nombre' => 'San Pedro Yepocapa'],
+            ['id_departamento' => 3, 'nombre' => 'San Juan Comalapa'],
+            ['id_departamento' => 3, 'nombre' => 'San Andrés Itzapa'],
+            ['id_departamento' => 4, 'nombre' => 'Chiquimula'],
+            ['id_departamento' => 4, 'nombre' => 'San José la Arada'],
+            ['id_departamento' => 4, 'nombre' => 'Jocotán'],
+            ['id_departamento' => 4, 'nombre' => 'Olopa'],
+            ['id_departamento' => 4, 'nombre' => 'Quezaltepeque'],
+            ['id_departamento' => 4, 'nombre' => 'San Juan Ermita'],
+            ['id_departamento' => 4, 'nombre' => 'Concepción Las Minas'],
+            ['id_departamento' => 4, 'nombre' => 'Camotán'],
+            ['id_departamento' => 5, 'nombre' => 'El Jícaro'],
+            ['id_departamento' => 5, 'nombre' => 'Morazán'],
+            ['id_departamento' => 5, 'nombre' => 'San Agustín Acasaguastlán'],
+            ['id_departamento' => 5, 'nombre' => 'Sansare'],
+            ['id_departamento' => 5, 'nombre' => 'Sanarate'],
+            ['id_departamento' => 5, 'nombre' => 'El Progreso'],
+            ['id_departamento' => 5, 'nombre' => 'San Antonio La Paz'],
+            ['id_departamento' => 5, 'nombre' => 'San Cristóbal Acasaguastlán'],
+            ['id_departamento' => 6, 'nombre' => 'Escuintla'],
+            ['id_departamento' => 6, 'nombre' => 'Santa Lucía Cotzumalguapa'],
+            ['id_departamento' => 6, 'nombre' => 'La Democracia'],
+            ['id_departamento' => 6, 'nombre' => 'San José'],
+            ['id_departamento' => 6, 'nombre' => 'San Vicente Pacaya'],
+            ['id_departamento' => 6, 'nombre' => 'Siquinalá'],
+            ['id_departamento' => 6, 'nombre' => 'Tiquisate'],
+            ['id_departamento' => 6, 'nombre' => 'Palín'],
+            ['id_departamento' => 7, 'nombre' => 'Guatemala'],
+            ['id_departamento' => 7, 'nombre' => 'Mixco'],
+            ['id_departamento' => 7, 'nombre' => 'Villa Nueva'],
+            ['id_departamento' => 7, 'nombre' => 'San Miguel Petapa'],
+            ['id_departamento' => 7, 'nombre' => 'Amatitlán'],
+            ['id_departamento' => 7, 'nombre' => 'Santa Catarina Pinula'],
+            ['id_departamento' => 7, 'nombre' => 'San Juan Sacatepéquez'],
+            ['id_departamento' => 7, 'nombre' => 'Chuarrancho'],
+            ['id_departamento' => 7, 'nombre' => 'San Pedro Sacatepéquez'],
+            ['id_departamento' => 7, 'nombre' => 'San Raymundo'],
+            ['id_departamento' => 7, 'nombre' => 'Palencia'],
+            ['id_departamento' => 7, 'nombre' => 'San José del Golfo'],
+            ['id_departamento' => 8, 'nombre' => 'Huehuetenango'],
+            ['id_departamento' => 8, 'nombre' => 'Chiantla'],
+            ['id_departamento' => 8, 'nombre' => 'Malacatancito'],
+            ['id_departamento' => 8, 'nombre' => 'Nenton'],
+            ['id_departamento' => 8, 'nombre' => 'San Pedro Necta'],
+            ['id_departamento' => 8, 'nombre' => 'La Libertad'],
+            ['id_departamento' => 8, 'nombre' => 'Cuilco'],
+            ['id_departamento' => 8, 'nombre' => 'San Juan Atitlán'],
+            ['id_departamento' => 8, 'nombre' => 'Santa Bárbara'],
+            ['id_departamento' => 8, 'nombre' => 'Solalá'],
+            ['id_departamento' => 9, 'nombre' => 'Puerto Barrios'],
+            ['id_departamento' => 9, 'nombre' => 'Morales'],
+            ['id_departamento' => 9, 'nombre' => 'Los Amates'],
+            ['id_departamento' => 9, 'nombre' => 'El Estor'],
+            ['id_departamento' => 10, 'nombre' => 'Jalapa'],
+            ['id_departamento' => 10, 'nombre' => 'Mataquescuintla'],
+            ['id_departamento' => 10, 'nombre' => 'San Luis Jilotepeque'],
+            ['id_departamento' => 10, 'nombre' => 'San Manuel Chaparrón'],
+            ['id_departamento' => 10, 'nombre' => 'San Carlos Alzatate'],
+            ['id_departamento' => 10, 'nombre' => 'Jalapa'],
+            ['id_departamento' => 11, 'nombre' => 'Jutiapa'],
+            ['id_departamento' => 11, 'nombre' => 'El Adelanto'],
+            ['id_departamento' => 11, 'nombre' => 'Agua Blanca'],
+            ['id_departamento' => 11, 'nombre' => 'Asunción Mita'],
+            ['id_departamento' => 11, 'nombre' => 'Cuilapa'],
+            ['id_departamento' => 11, 'nombre' => 'Jutiapa'],
+            ['id_departamento' => 12, 'nombre' => 'Flores'],
+            ['id_departamento' => 12, 'nombre' => 'San José'],
+            ['id_departamento' => 12, 'nombre' => 'La Libertad'],
+            ['id_departamento' => 12, 'nombre' => 'San Andrés'],
+            ['id_departamento' => 12, 'nombre' => 'San Benito'],
+            ['id_departamento' => 13, 'nombre' => 'Quetzaltenango'],
+            ['id_departamento' => 13, 'nombre' => 'Salcajá'],
+            ['id_departamento' => 13, 'nombre' => 'San Juan Ostuncalco'],
+            ['id_departamento' => 13, 'nombre' => 'San Martín Sacatepéquez'],
+            ['id_departamento' => 13, 'nombre' => 'Sibilia'],
+            ['id_departamento' => 13, 'nombre' => 'Zunil'],
+            ['id_departamento' => 14, 'nombre' => 'Santa Cruz del Quiché'],
+            ['id_departamento' => 14, 'nombre' => 'Chiché'],
+            ['id_departamento' => 14, 'nombre' => 'Chichicastenango'],
+            ['id_departamento' => 14, 'nombre' => 'Patzité'],
+            ['id_departamento' => 14, 'nombre' => 'Zaragoza'],
+            ['id_departamento' => 15, 'nombre' => 'Retalhuleu'],
+            ['id_departamento' => 15, 'nombre' => 'San Sebastián'],
+            ['id_departamento' => 15, 'nombre' => 'San Martín Zapotitlán'],
+            ['id_departamento' => 15, 'nombre' => 'San Antonio'],
+            ['id_departamento' => 15, 'nombre' => 'San Andrés Villa Seca'],
+            ['id_departamento' => 16, 'nombre' => 'Antigua Guatemala'],
+            ['id_departamento' => 16, 'nombre' => 'San Lucas Sacatepéquez'],
+            ['id_departamento' => 16, 'nombre' => 'San Bartolomé Milpas Altas'],
+            ['id_departamento' => 16, 'nombre' => 'Sumpango'],
+            ['id_departamento' => 16, 'nombre' => 'Santa María de Jesús'],
+            ['id_departamento' => 17, 'nombre' => 'San Marcos'],
+            ['id_departamento' => 17, 'nombre' => 'San Pedro Sacatepéquez'],
+            ['id_departamento' => 17, 'nombre' => 'San Antonio Sacatepéquez'],
+            ['id_departamento' => 17, 'nombre' => 'Tajumulco'],
+            ['id_departamento' => 17, 'nombre' => 'Tejutla'],
+            ['id_departamento' => 18, 'nombre' => 'Santa Rosa de Lima'],
+            ['id_departamento' => 18, 'nombre' => 'Barberena'],
+            ['id_departamento' => 18, 'nombre' => 'Cuilapa'],
+            ['id_departamento' => 18, 'nombre' => 'Casillas'],
+            ['id_departamento' => 18, 'nombre' => 'Guazacapán'],
+            ['id_departamento' => 19, 'nombre' => 'Solalá'],
+            ['id_departamento' => 19, 'nombre' => 'San José Chacaya'],
+            ['id_departamento' => 19, 'nombre' => 'Santa Clara La Laguna'],
+            ['id_departamento' => 19, 'nombre' => 'San Andrés Semetabaj'],
+            ['id_departamento' => 20, 'nombre' => 'Mazatenango'],
+            ['id_departamento' => 20, 'nombre' => 'Cuyotenango'],
+            ['id_departamento' => 20, 'nombre' => 'Zunilito'],
+            ['id_departamento' => 20, 'nombre' => 'San Francisco Zapotitlán'],
+            ['id_departamento' => 20, 'nombre' => 'San José El Ídolo'],
+            ['id_departamento' => 20, 'nombre' => 'San Gabriel'],
+            ['id_departamento' => 20, 'nombre' => 'San Bernardino'],
+            ['id_departamento' => 20, 'nombre' => 'San Antonio Suchitepéquez'],
+            ['id_departamento' => 21, 'nombre' => 'Totonicapán'],
+            ['id_departamento' => 21, 'nombre' => 'San Cristóbal Totonicapán'],
+            ['id_departamento' => 21, 'nombre' => 'San Francisco El Alto'],
+            ['id_departamento' => 21, 'nombre' => 'Momostenango'],
+            ['id_departamento' => 22, 'nombre' => 'Zacapa'],
+            ['id_departamento' => 22, 'nombre' => 'Cabañas'],
+            ['id_departamento' => 22, 'nombre' => 'Chiquimula'],
+            ['id_departamento' => 22, 'nombre' => 'Gualán'],
+            ['id_departamento' => 22, 'nombre' => 'La Unión'],
+            ['id_departamento' => 22, 'nombre' => 'Teculután'],
+            ['id_departamento' => 22, 'nombre' => 'Estanzuela'],
+            ['id_departamento' => 22, 'nombre' => 'San Jorge'],
+            ['id_departamento' => 22, 'nombre' => 'Zacapa'],
+            ['id_departamento' => 22, 'nombre' => 'La Unión'],
+            ['id_departamento' => 22, 'nombre' => 'San Diego'],
+            ['id_departamento' => 22, 'nombre' => 'Quezaltepeque'],
+        ]);
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('municipio');
+    }
+};
