@@ -153,6 +153,7 @@ CREATE TABLE AUDITORIA (
     id_auditor INT NOT NULL,
     fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     detalles_auditoria TEXT,
+    estado VARCHAR(20),
     FOREIGN KEY (id_contrato) REFERENCES CONTRATO_NICHO(id_contrato),
     FOREIGN KEY (id_auditor) REFERENCES PERSONA(id_persona)
 );
@@ -163,4 +164,11 @@ SELECT * FROM persona;
 SELECT * FROM tipo_usuario;
 SELECT * FROM contacto_persona;
 SELECT * FROM autenticacion;
+SELECT * FROM avenida;
+SELECT * FROM calle;
+SELECT * FROM ubicacion_nicho;
+SELECT * FROM  tipo_nicho;
+SELECT * FROM nichos;
+SELECT * FROM ocupante;
+
 

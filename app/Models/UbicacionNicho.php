@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Persona extends Model
+class UbicacionNicho extends Model
 {
-    protected $table = 'persona';
+    protected $table = 'ubicacion_nicho';
     //
 }
