@@ -170,5 +170,6 @@ SELECT * FROM ubicacion_nicho;
 SELECT * FROM  tipo_nicho;
 SELECT * FROM nichos;
 SELECT * FROM ocupante;
+SELECT * FROM contrato_nicho;
 
 
