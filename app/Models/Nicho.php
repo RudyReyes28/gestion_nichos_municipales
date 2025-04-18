@@ -61,4 +61,49 @@ class Nicho extends Model
         JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho');
     }
 
+    public static function getAllInfoNichosId($id){
+        return DB::select('SELECT n.*,  av.nombre_avenida, c.nombre_calle, tn.nombre_tipo 
+        FROM nichos n
+        JOIN ubicacion_nicho un ON n.id_ubicacion_nicho = un.id_ubicacion_nicho
+        JOIN avenida av ON un.id_avenida = av.id_avenida
+        JOIN calle c ON un.id_calle = c.id_calle
+        JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho WHERE n.id_nicho = ?', [$id]);
+    }
+
+    public static function getAllInfoNichosByAvenida($id_avenida){
+        return DB::select('SELECT n.*,  av.nombre_avenida, c.nombre_calle, tn.nombre_tipo 
+        FROM nichos n
+        JOIN ubicacion_nicho un ON n.id_ubicacion_nicho = un.id_ubicacion_nicho
+        JOIN avenida av ON un.id_avenida = av.id_avenida
+        JOIN calle c ON un.id_calle = c.id_calle
+        JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho WHERE av.id_avenida = ?', [$id_avenida]);
+    }
+
+    public static function getAllInfoNichosByCalle($id_calle){
+        return DB::select('SELECT n.*,  av.nombre_avenida, c.nombre_calle, tn.nombre_tipo 
+        FROM nichos n
+        JOIN ubicacion_nicho un ON n.id_ubicacion_nicho = un.id_ubicacion_nicho
+        JOIN avenida av ON un.id_avenida = av.id_avenida
+        JOIN calle c ON un.id_calle = c.id_calle
+        JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho WHERE c.id_calle = ?', [$id_calle]);
+    }
+
+    public static function getAllInfoNichosByTipo($id_tipo_nicho){
+        return DB::select('SELECT n.*,  av.nombre_avenida, c.nombre_calle, tn.nombre_tipo 
+        FROM nichos n
+        JOIN ubicacion_nicho un ON n.id_ubicacion_nicho = un.id_ubicacion_nicho
+        JOIN avenida av ON un.id_avenida = av.id_avenida
+        JOIN calle c ON un.id_calle = c.id_calle
+        JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho WHERE tn.id_tipo_nicho = ?', [$id_tipo_nicho]);
+    }
+
+    public static function getAllInfoNichosByEstado($estado){
+        return DB::select('SELECT n.*,  av.nombre_avenida, c.nombre_calle, tn.nombre_tipo 
+        FROM nichos n
+        JOIN ubicacion_nicho un ON n.id_ubicacion_nicho = un.id_ubicacion_nicho
+        JOIN avenida av ON un.id_avenida = av.id_avenida
+        JOIN calle c ON un.id_calle = c.id_calle
+        JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho WHERE n.estado = ?', [$estado]);
+    }
+
 }

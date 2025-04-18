@@ -44,10 +44,10 @@
                 <label for="ubicacion" class="form-label">Ubicación</label>
                 <select class="form-select" id="ubicacion" name="ubicacion">
                     <option value="">Todas las ubicaciones</option>
-                    <!-- Aquí podrías cargar dinámicamente las ubicaciones -->
-                    <option value="1">Avenida Central</option>
-                    <option value="2">Avenida Norte</option>
-                    <option value="3">Avenida Sur</option>
+                    @foreach ($avenidas as $avenida )
+                        <option value="{{ $avenida->id_avenida }}">{{ $avenida->nombre_avenida }}</option>
+                    
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-4 mb-3">

@@ -54,6 +54,7 @@ class AutenticacionController extends Controller
         $id_autenticacion = Session::get('id_autenticacion');
         $id_persona = Session::get('id_persona');
         $persona = Persona::getPersonaById($id_persona);
+        $persona = $persona[0];
 
         return view('admin.home', compact('persona'));
     }
@@ -65,6 +66,7 @@ class AutenticacionController extends Controller
         $id_autenticacion = Session::get('id_autenticacion');
         $id_persona = Session::get('id_persona');
         $persona = Persona::getPersonaById($id_persona);
+        $persona = $persona[0];
 
         return view('ayudante.home', compact('persona'));
     }
@@ -75,6 +77,7 @@ class AutenticacionController extends Controller
         $id_autenticacion = Session::get('id_autenticacion');
         $id_persona = Session::get('id_persona');
         $persona = Persona::getPersonaById($id_persona);
+        $persona = $persona[0];
 
         return view('auditor.home', compact('persona'));
     }

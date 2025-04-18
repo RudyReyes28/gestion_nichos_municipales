@@ -158,6 +158,75 @@ CREATE TABLE AUDITORIA (
     FOREIGN KEY (id_auditor) REFERENCES PERSONA(id_persona)
 );
 
+
+CREATE VIEW vista_contratos_completa AS
+SELECT 
+    cn.id_contrato,
+    cn.fecha_inicio,
+    cn.fecha_fin,
+    cn.fecha_gracia,
+    cn.estado_contrato,
+    cn.estado_pago,
+
+    -- Usuario que genera el contrato
+    au.usuario AS usuario_generador,
+    tu.tipo_usuario,
+
+    -- Responsable
+    r.id_persona AS id_responsable,
+    r.nombre AS nombre_responsable,
+    r.apellido AS apellido_responsable,
+    r.dpi AS dpi_responsable,
+
+    -- Ocupante
+    o.id_ocupante,
+    p_ocu.nombre AS nombre_ocupante,
+    p_ocu.apellido AS apellido_ocupante,
+    o.fecha_fallecimiento,
+    tm.nombre_causa AS causa_muerte,
+    tocu.tipo AS tipo_ocupante,
+
+    -- Nicho
+    n.id_nicho,
+    n.descripcion AS descripcion_nicho,
+    n.estado AS estado_nicho,
+    tn.nombre_tipo AS tipo_nicho,
+
+    -- Ubicación del nicho
+    ub.descripcion AS descripcion_ubicacion,
+    c.nombre_calle,
+    a.nombre_avenida
+
+FROM CONTRATO_NICHO cn
+
+-- Usuario que genera el contrato
+JOIN AUTENTICACION au ON cn.id_usuario_generador = au.id_autenticacion
+JOIN TIPO_USUARIO tu ON au.id_tipo_usuario = tu.id_tipo_usuario
+
+-- Responsable del contrato
+JOIN PERSONA r ON cn.id_responsable = r.id_persona
+
+-- Ocupante del nicho
+JOIN OCUPANTE o ON cn.id_ocupante = o.id_ocupante
+JOIN PERSONA p_ocu ON o.id_persona = p_ocu.id_persona
+LEFT JOIN TIPOS_CAUSA_MUERTE tm ON o.id_tipo_muerte = tm.id_tipo_muerte
+JOIN TIPO_OCUPANTE tocu ON o.id_tipo_ocupante = tocu.id_tipo_ocupante
+
+-- Información del nicho
+JOIN NICHOS n ON cn.id_nicho = n.id_nicho
+LEFT JOIN TIPO_NICHO tn ON n.id_tipo_nicho = tn.id_tipo_nicho
+LEFT JOIN UBICACION_NICHO ub ON n.id_ubicacion_nicho = ub.id_ubicacion_nicho
+LEFT JOIN CALLE c ON ub.id_calle = c.id_calle
+LEFT JOIN AVENIDA a ON ub.id_avenida = a.id_avenida;
+
+SELECT * FROM vista_contratos_completa;
+
+SELECT * 
+FROM vista_contratos_completa
+WHERE estado_contrato = 'solicitado';
+
+
+
 SELECT * FROM departamento;
 SELECT * FROM municipio;
 SELECT * FROM persona;
@@ -171,5 +240,3 @@ SELECT * FROM  tipo_nicho;
 SELECT * FROM nichos;
 SELECT * FROM ocupante;
 SELECT * FROM contrato_nicho;
-
-

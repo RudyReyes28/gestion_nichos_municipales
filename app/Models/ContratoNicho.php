@@ -8,24 +8,7 @@ use Illuminate\Support\Facades\DB;
 class ContratoNicho extends Model
 {
     protected $table = 'contrato_nicho';
-    //
-    /*CREATE TABLE CONTRATO_NICHO (
-    id_contrato INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_usuario_generador INT NOT NULL,
-    id_nicho INT NOT NULL,
-    id_ocupante INT NOT NULL,
-    id_responsable INT NOT NULL,
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    fecha_gracia DATE,
-    estado_contrato VARCHAR(20),
-    estado_pago VARCHAR(20),
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario_generador) REFERENCES AUTENTICACION(id_autenticacion),
-    FOREIGN KEY (id_nicho) REFERENCES NICHOS(id_nicho),
-    FOREIGN KEY (id_ocupante) REFERENCES OCUPANTE(id_ocupante),
-    FOREIGN KEY (id_responsable) REFERENCES PERSONA(id_persona)
-); */
+    
 
     public static function solicitarContrato($id_nicho, $id_ocupante, $id_responsable)
     {
@@ -59,6 +42,37 @@ class ContratoNicho extends Model
     public static function deleteContratoNicho($id)
     {
         return DB::delete('DELETE FROM contrato_nicho WHERE id_contrato = ?', [$id]);
+    }
+
+
+    public static function getAllInfoContratoNicho()
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa');
+    }
+
+    public static function getAllInfoContratoNichoById($id)
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE id_contrato = ?', [$id]);
+    }
+
+    public static function getAllInfoContratoNichoByNicho($id_nicho)
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE id_nicho = ?', [$id_nicho]);
+    }
+
+    public static function getAllInfoContratoNichoByEstado($estado)
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE estado_contrato = ?', [$estado]);
+    }
+
+    public static function rechazarContrato($id_contrato)
+    {
+        return DB::update('UPDATE contrato_nicho SET estado_contrato = ?, estado_pago = ? WHERE id_contrato = ?', ['rechazado', 'rechazado', $id_contrato]);
+    }
+
+    public static function aceptarContrato($id_contrato)
+    {
+        return DB::update('UPDATE contrato_nicho SET estado_contrato = ?, estado_pago = ? WHERE id_contrato = ?', ['pago_pendiente', 'pago_pendiente', $id_contrato]);
     }
 
 }

@@ -8,11 +8,12 @@ use App\Models\ContratoNicho;
 use App\Models\Nicho;
 use App\Models\Ocupante;
 use App\Models\Persona;
+use App\Models\Avenida;
 
 class ServicioNichosController extends Controller
 {
     //
-    public function manejoNichos(){
+    public function manejoNichos(Request $request){
         if (!session()->has('id_autenticacion')) {
             return redirect()->route('login');
         }
@@ -21,8 +22,19 @@ class ServicioNichosController extends Controller
         $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
         $nichos = Nicho::getAllInfoNichos();
+        $avenidas = Avenida::allAvenida();
+        $codigo = $request->query('codigo');      
+        $ubicacion = $request->query('ubicacion'); 
+        $estado = $request->query('estado');    
+        if($codigo) {
+            $nichos = Nicho::getAllInfoNichosId($codigo);
+        } elseif ($ubicacion) {
+            $nichos = Nicho::getAllInfoNichosByAvenida($ubicacion);
+        } elseif ($estado) {
+            $nichos = Nicho::getAllInfoNichosByEstado($estado);
+        }
 
-        return view('usuario.nichos', compact('persona', 'nichos'));
+        return view('usuario.nichos', compact('persona', 'nichos', 'avenidas'));
         
     }
 
