@@ -70,4 +70,14 @@ class Persona extends Model
     {
         return DB::select('SELECT * FROM contacto_persona WHERE id_persona = ?', [$id_persona]);
     }
+
+    public static function getAllInfoPersonas()
+    {
+        return DB::select('SELECT * FROM vista_personas_completa');
+    }
+
+    public static function getAllInfoPersonaById($id_persona)
+    {
+        return DB::select('SELECT * FROM vista_personas_completa WHERE id_persona = ?', [$id_persona]);
+    }
 }

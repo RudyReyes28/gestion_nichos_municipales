@@ -53,6 +53,7 @@
                             <a href="{{ route('admin.contratos') }}?estado=activo" class="btn {{ request()->query('estado') == 'activo' ? 'btn-primary' : 'btn-outline-primary' }}">Activo</a>
                             <a href="{{ route('admin.contratos') }}?estado=exhumacion" class="btn {{ request()->query('estado') == 'exhumacion' ? 'btn-primary' : 'btn-outline-primary' }}">Exhumación</a>
                             <a href="{{ route('admin.contratos') }}?estado=rechazado" class="btn {{ request()->query('estado') == 'rechazado' ? 'btn-primary' : 'btn-outline-primary' }}">Rechazados</a>
+                            <a href="{{ route('admin.contratos') }}?estado=vencido" class="btn {{ request()->query('estado') == 'vencido' ? 'btn-primary' : 'btn-outline-primary' }}">Vencidos</a>
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AutenticacionController;
 use App\Http\Controllers\usuario\ServicioNichosController;
 use App\Http\Controllers\admin\ContratoController;
+use App\Http\Controllers\usuario\ServicioContratosController;
+use App\Http\Controllers\usuario\MisNichosController;
+use App\Http\Controllers\usuario\MiPerfilController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -19,6 +22,10 @@ Route::get('/usuario/home', [AutenticacionController::class, 'goUsuarioHome']) -
 Route::get('/usuario/nichos', [ServicioNichosController::class, 'manejoNichos']) ->name('usuario.nichos');
 Route::get('/usuario/solicitud_contrato/{id_nicho}', [ServicioNichosController::class, 'solicitudContrato']) ->name('usuario.solicitud_contrato');
 Route::post('/usuario/solicitud_contrato', [ServicioNichosController::class, 'crearSolicitudContrato']) ->name('usuario.crear_solicitud_contrato');
+Route::get('/usuario/servicio_contratos', [ServicioContratosController::class, 'index']) ->name('usuario.servicio_contratos');
+Route::get('/usuario/servicio_contratos/pagar_boleta/{id_boleta}', [ServicioContratosController::class, 'pagarBoleta']) ->name('usuario.pagar_boleta');
+Route::get('/usuario/mis_nichos', [MisNichosController::class, 'index']) ->name('usuario.mis_nichos');
+Route::get('/usuario/mi_perfil', [MiPerfilController::class, 'index']) ->name('usuario.mi_perfil');
 
 // Rutas para el administrador
 Route::get('/admin/home', [AutenticacionController::class, 'goAdminHome']) ->name('admin.home');

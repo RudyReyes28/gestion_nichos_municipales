@@ -65,6 +65,20 @@ class ContratoNicho extends Model
         return DB::select('SELECT * FROM vista_contratos_completa WHERE estado_contrato = ?', [$estado]);
     }
 
+    public static function getAllInfoContratoNichoByOcupante($id_ocupante)
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE id_ocupante = ?', [$id_ocupante]);
+    }
+    public static function getAllInfoContratoNichoByResponsable($id_responsable)
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE id_responsable = ?', [$id_responsable]);
+    }
+
+    public static function getAllInfoContratoNichoByResponsableAndEstado($id_responsable, $estado)
+    {
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE id_responsable = ? AND estado_contrato = ?', [$id_responsable, $estado]);
+    }
+
     public static function rechazarContrato($id_contrato)
     {
         return DB::update('UPDATE contrato_nicho SET estado_contrato = ?, estado_pago = ? WHERE id_contrato = ?', ['rechazado', 'rechazado', $id_contrato]);
@@ -73,6 +87,11 @@ class ContratoNicho extends Model
     public static function aceptarContrato($id_contrato)
     {
         return DB::update('UPDATE contrato_nicho SET estado_contrato = ?, estado_pago = ? WHERE id_contrato = ?', ['pago_pendiente', 'pago_pendiente', $id_contrato]);
+    }
+
+    public static function updateEstadoPagoBoleta($id_contrato)
+    {
+        return DB::update('UPDATE contrato_nicho SET estado_contrato = ?, estado_pago = ? WHERE id_contrato = ?', ['pago_realizado', 'pago_realizado', $id_contrato]);
     }
 
 }

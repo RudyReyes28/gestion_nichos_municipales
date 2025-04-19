@@ -124,13 +124,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('usuario.mis_nichos') }}" class="nav-link {{ request()->routeIs('usuario.mis_nichos') ? 'active' : '' }}">
                                 <i class="fas fa-monument"></i>
                                 Mis Nichos
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('usuario.servicio_contratos') }}" class="nav-link {{ request()->routeIs('usuario.servicio_contratos') ? 'active' : '' }}">
                                 <i class="fas fa-file-contract"></i>
                                 Mis Contratos
                             </a>
@@ -142,13 +142,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('usuario.mi_perfil') }}" class="nav-link {{ request()->routeIs('usuario.mi_perfil') ? 'active' : '' }}">
                                 <i class="fas fa-user"></i>
                                 Mi Perfil
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('logout') }}" class="nav-link">
+                            <a href="{{ route('logout') }}" class="nav-link ">
                                 <i class="fas fa-sign-out-alt"></i>
                                 Cerrar Sesión
                             </a>

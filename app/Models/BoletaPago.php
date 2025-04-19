@@ -23,8 +23,43 @@ class BoletaPago extends Model
     public static function generarBoleta($id_contrato, $ruta_comprobante)
     {
         $total = 600;
-        $estado = 'pago pendiente';
+        $estado = 'pago_pendiente';
         $fecha_emision = date('Y-m-d');
         return DB::insert('INSERT INTO boleta_pago (id_contrato, total, estado, ruta_comprobante, fecha_emision) VALUES (?, ?, ?, ?, ?)', [$id_contrato, $total, $estado, $ruta_comprobante, $fecha_emision]);
     }
+
+    public static function getBoletaById($id)
+    {
+        return DB::select('SELECT * FROM boleta_pago WHERE id_boleta = ?', [$id]);
+    }
+    public static function getBoletaByContrato($id_contrato)
+    {
+        return DB::select('SELECT * FROM boleta_pago WHERE id_contrato = ?', [$id_contrato]);
+    }
+    public static function getAllBoletas()
+    {
+        return DB::select('SELECT * FROM boleta_pago');
+    }
+
+    public static function pagoBoleta($id_boleta)
+    {
+        return DB::update('UPDATE boleta_pago SET estado = ? WHERE id_boleta = ?', ['pago_realizado', $id_boleta]);
+    }
+
+    public static function deleteBoleta($id)
+    {
+        return DB::delete('DELETE FROM boleta_pago WHERE id_boleta = ?', [$id]);
+    }
+
+    public static function marcarBoletaComoPagada($id_boleta)
+    {
+        return DB::update('UPDATE boleta_pago SET estado = ? WHERE id_boleta = ?', ['pagada', $id_boleta]);
+    }
+
+    public static function getIdContratoByBoleta($id_boleta)
+    {
+        return DB::select('SELECT id_contrato FROM boleta_pago WHERE id_boleta = ?', [$id_boleta]);
+    }
+
+
 }

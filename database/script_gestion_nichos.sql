@@ -219,6 +219,29 @@ LEFT JOIN UBICACION_NICHO ub ON n.id_ubicacion_nicho = ub.id_ubicacion_nicho
 LEFT JOIN CALLE c ON ub.id_calle = c.id_calle
 LEFT JOIN AVENIDA a ON ub.id_avenida = a.id_avenida;
 
+CREATE VIEW vista_personas_completa AS
+SELECT 
+    p.id_persona,
+    p.nombre AS nombre_persona,
+    p.apellido AS apellido_persona,
+    p.dpi,
+    
+    cp.telefono,
+    cp.correo,
+    cp.id_direccion,
+    
+    d.descripcion AS direccion,
+    m.nombre AS municipio,
+    dep.nombre AS departamento
+
+FROM PERSONA p
+LEFT JOIN CONTACTO_PERSONA cp ON p.id_persona = cp.id_persona
+LEFT JOIN DIRECCION d ON cp.id_direccion = d.id_direccion
+LEFT JOIN MUNICIPIO m ON d.id_municipio = m.id_municipio
+LEFT JOIN DEPARTAMENTO dep ON m.id_departamento = dep.id_departamento;
+
+
+
 SELECT * FROM vista_contratos_completa;
 
 SELECT * 
@@ -240,3 +263,9 @@ SELECT * FROM  tipo_nicho;
 SELECT * FROM nichos;
 SELECT * FROM ocupante;
 SELECT * FROM contrato_nicho;
+SELECT * FROM boleta_pago;
+USE gestion_nichos;
+
+-- Estados para la boleta de pago y contrato
+-- Contrato: solicitado, rechazado, pago_pendiente, pago_realizado, activo, exhumacion, vencido
+-- Boleta de pago: pago_pendiente, pago_realizado, pagado
