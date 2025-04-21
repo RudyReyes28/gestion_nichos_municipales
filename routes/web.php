@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\ContratoController;
 use App\Http\Controllers\usuario\ServicioContratosController;
 use App\Http\Controllers\usuario\MisNichosController;
 use App\Http\Controllers\usuario\MiPerfilController;
+use App\Http\Controllers\admin\BoletaPagoController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -33,3 +34,5 @@ Route::get('/admin/contratos', [ContratoController::class, 'contratos']) ->name(
 Route::get('/admin/contratos/rechazar/{id_contrato}', [ContratoController::class, 'rechazarContrato']) ->name('admin.contratos.rechazar');
 Route::get('/admin/contratos/generar_boleta/{id}', [ContratoController::class, 'generarBoleta']) ->name('admin.contratos.generar_boleta');
 Route::post('/admin/contratos/generar_boleta', [ContratoController::class, 'aceptarContrato']) ->name('admin.contratos.aceptar_contrato');
+Route::get('/admin/boleta_pago', [BoletaPagoController::class, 'index']) ->name('admin.boleta_pago');
+Route::get('/admin/boleta_pago/aceptar_pago/{id_boleta}', [BoletaPagoController::class, 'aceptarPagoBoleta']) ->name('admin.boleta_pago.aceptar_pago');

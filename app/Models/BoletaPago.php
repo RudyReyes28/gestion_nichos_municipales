@@ -53,7 +53,7 @@ class BoletaPago extends Model
 
     public static function marcarBoletaComoPagada($id_boleta)
     {
-        return DB::update('UPDATE boleta_pago SET estado = ? WHERE id_boleta = ?', ['pagada', $id_boleta]);
+        return DB::update('UPDATE boleta_pago SET estado = ? WHERE id_boleta = ?', ['pagado', $id_boleta]);
     }
 
     public static function getIdContratoByBoleta($id_boleta)
@@ -61,5 +61,17 @@ class BoletaPago extends Model
         return DB::select('SELECT id_contrato FROM boleta_pago WHERE id_boleta = ?', [$id_boleta]);
     }
 
+    public static function getAllInfoContratoBoletas(){
+        return DB::select('SELECT * FROM vista_contratos_boletas');
+    }
+
+    public static function procesarPagoBoleta($id_boleta){
+        try{
+            DB::statement('CALL procesarPagoBoleta(?)', [$id_boleta]);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
 
 }

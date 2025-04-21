@@ -141,12 +141,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.boleta_pago') }}"
+                                class="nav-link {{ request()->routeIs('admin.boleta_pago*') ? 'active' : '' }}">
                                 <i class="fas fa-receipt"></i>
                                 Gestión de Boletas
                             </a>
-                        </li>
-                        <li class="nav-item">
+                        </li>  <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-users-cog"></i>
                                 Gestión de Usuarios

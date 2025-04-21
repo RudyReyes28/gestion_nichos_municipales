@@ -85,7 +85,6 @@
                             <p><strong>Válido hasta:</strong> {{ date('d/m/Y', strtotime('+5 days')) }}</p>
                         </div>
                         <div class="col-md-6 text-md-end">
-                            <p><strong>Estado:</strong> <span class="badge bg-warning">No Pagado</span></p>
                             <p><strong>Monto:</strong> Q600.00</p>
                         </div>
                     </div>
