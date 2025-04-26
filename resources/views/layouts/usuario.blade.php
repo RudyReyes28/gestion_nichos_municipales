@@ -136,7 +136,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('usuario.exhumacion') }}"
+                                class="nav-link {{ request()->routeIs('usuario.exhumacion') || request()->routeIs('usuario.mis_exhumaciones') ? 'active' : '' }}">
                                 <i class="fas fa-exchange-alt"></i>
                                 Exhumaciones
                             </a>
