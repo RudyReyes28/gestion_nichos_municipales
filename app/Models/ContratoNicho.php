@@ -98,4 +98,12 @@ class ContratoNicho extends Model
         return DB::update('UPDATE contrato_nicho SET estado_contrato = ?, estado_pago = ? WHERE id_contrato = ?', ['pago_realizado', 'pago_realizado', $id_contrato]);
     }
 
+    public static function getResponsables(){
+        return DB::select('SELECT DISTINCT id_responsable FROM contrato_nicho');
+    }
+
+    public static function getAllInfoResponsables(){
+        return DB::select('SELECT * FROM vista_responsables_completa');
+    }
+
 }

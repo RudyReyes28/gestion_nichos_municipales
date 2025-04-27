@@ -23,7 +23,7 @@ class AutenticacionController extends Controller
 
         $autenticacion = Autenticacion::getAutenticacionByUsuario($usuario);
 
-        if ($autenticacion) {
+        if ($autenticacion && $autenticacion[0]->estado == 'activo') {
             if (password_verify($contrasenia, $autenticacion[0]->contrasenia)) {
                 Session::put('id_autenticacion', $autenticacion[0]->id_autenticacion);
                 Session::put('id_persona', $autenticacion[0]->id_persona);

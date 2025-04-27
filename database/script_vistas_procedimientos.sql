@@ -308,3 +308,120 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+CREATE OR REPLACE VIEW vista_ocupantes_completa AS
+SELECT 
+    o.id_ocupante,
+    
+    -- Datos de la persona
+    p.id_persona,
+    p.nombre AS nombre_persona,
+    p.apellido AS apellido_persona,
+    p.dpi,
+    
+    -- Contacto de la persona
+    cp.id_contacto,
+    cp.telefono,
+    cp.correo,
+    
+    -- Dirección de la persona
+    d.id_direccion,
+    d.descripcion AS descripcion_direccion,
+    
+    -- Ubicación (municipio, departamento)
+    m.id_municipio,
+    m.nombre AS nombre_municipio,
+    dept.id_departamento,
+    dept.nombre AS nombre_departamento,
+    
+    -- Datos del ocupante
+    o.fecha_fallecimiento,
+    
+    -- Tipo de muerte
+    tcm.id_tipo_muerte,
+    tcm.nombre_causa AS causa_muerte,
+    
+    -- Tipo de ocupante
+    tocu.id_tipo_ocupante,
+    tocu.tipo AS tipo_ocupante
+    
+FROM 
+    OCUPANTE o
+    INNER JOIN PERSONA p ON o.id_persona = p.id_persona
+    LEFT JOIN CONTACTO_PERSONA cp ON p.id_persona = cp.id_persona
+    LEFT JOIN DIRECCION d ON cp.id_direccion = d.id_direccion
+    LEFT JOIN MUNICIPIO m ON d.id_municipio = m.id_municipio
+    LEFT JOIN DEPARTAMENTO dept ON m.id_departamento = dept.id_departamento
+    LEFT JOIN TIPOS_CAUSA_MUERTE tcm ON o.id_tipo_muerte = tcm.id_tipo_muerte
+    INNER JOIN TIPO_OCUPANTE tocu ON o.id_tipo_ocupante = tocu.id_tipo_ocupante;
+
+
+CREATE OR REPLACE VIEW vista_responsables_completa AS
+SELECT DISTINCT
+    p.id_persona,
+    p.nombre AS nombre_persona,
+    p.apellido AS apellido_persona,
+    p.dpi,
+    
+    cp.id_contacto,
+    cp.telefono,
+    cp.correo,
+    
+    d.id_direccion,
+    d.descripcion AS descripcion_direccion,
+    
+    m.id_municipio,
+    m.nombre AS nombre_municipio,
+    
+    dept.id_departamento,
+    dept.nombre AS nombre_departamento
+    
+FROM 
+    CONTRATO_NICHO cn
+    INNER JOIN PERSONA p ON cn.id_responsable = p.id_persona
+    LEFT JOIN CONTACTO_PERSONA cp ON p.id_persona = cp.id_persona
+    LEFT JOIN DIRECCION d ON cp.id_direccion = d.id_direccion
+    LEFT JOIN MUNICIPIO m ON d.id_municipio = m.id_municipio
+    LEFT JOIN DEPARTAMENTO dept ON m.id_departamento = dept.id_departamento;
+
+
+CREATE OR REPLACE VIEW vista_usuarios_autenticados AS
+SELECT 
+    a.id_autenticacion,
+    a.usuario AS nombre_usuario,
+    a.contrasenia,
+    a.estado AS estado_usuario,
+    
+    p.id_persona,
+    p.nombre AS nombre_persona,
+    p.apellido AS apellido_persona,
+    p.dpi,
+    
+    tu.id_tipo_usuario,
+    tu.tipo_usuario,
+    
+    cp.id_contacto,
+    cp.telefono,
+    cp.correo,
+    
+    d.id_direccion,
+    d.descripcion AS descripcion_direccion,
+    
+    m.id_municipio,
+    m.nombre AS nombre_municipio,
+    
+    dept.id_departamento,
+    dept.nombre AS nombre_departamento
+
+FROM 
+    AUTENTICACION a
+    INNER JOIN PERSONA p ON a.id_persona = p.id_persona
+    INNER JOIN TIPO_USUARIO tu ON a.id_tipo_usuario = tu.id_tipo_usuario
+    LEFT JOIN CONTACTO_PERSONA cp ON p.id_persona = cp.id_persona
+    LEFT JOIN DIRECCION d ON cp.id_direccion = d.id_direccion
+    LEFT JOIN MUNICIPIO m ON d.id_municipio = m.id_municipio
+    LEFT JOIN DEPARTAMENTO dept ON m.id_departamento = dept.id_departamento;
+    
+SELECT * FROM vista_usuarios_autenticados;

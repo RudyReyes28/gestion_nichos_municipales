@@ -186,6 +186,7 @@ SELECT * FROM ocupante;
 SELECT * FROM contrato_nicho;
 SELECT * FROM boleta_pago;
 SELECT * FROM tipo_ocupante;
+SELECT * FROM registro_exhumaciones;
 
 
 SELECT * FROM vista_personas_completa WHERE id_persona = 4;

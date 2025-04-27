@@ -39,4 +39,21 @@ class Autenticacion extends Model
         return DB::delete('DELETE FROM autenticacion WHERE id_autenticacion = ?', [$id]);
     }
 
+    public static function getAllInfoAutenticacion()
+    {
+        return DB::select('SELECT * FROM vista_usuarios_autenticados');
+    }
+
+    public static function getTiposUsuario(){
+        return DB::select('SELECT * FROM tipo_usuario');
+    }
+
+    public static function activiarUsuario($id_autenticacion){
+        return DB::update('UPDATE autenticacion SET estado = ? WHERE id_autenticacion = ?', ['activo', $id_autenticacion]);
+    }
+
+    public static function desactivarUsuario($id_autenticacion){
+        return DB::update('UPDATE autenticacion SET estado = ? WHERE id_autenticacion = ?', ['inactivo', $id_autenticacion]);
+    }
+
 }

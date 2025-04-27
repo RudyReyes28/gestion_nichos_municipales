@@ -54,4 +54,8 @@ class Ocupante extends Model
         JOIN tipo_ocupante toc ON oc.id_tipo_ocupante = toc.id_tipo_ocupante');
     }
 
+    public static function getOcupantesView(){
+        return DB::select('SELECT * FROM vista_ocupantes_completa');
+    }
+
 }
