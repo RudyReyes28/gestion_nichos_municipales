@@ -44,12 +44,10 @@
                                 <td>
                                     @if($exhumacion->estado_exhumacion == 'aprobada')
                                         <span class="badge bg-success">Aprobada</span>
-                                    @elseif($exhumacion->estado_exhumacion == 'pendiente')
+                                    @elseif($exhumacion->estado_exhumacion == 'solicitado')
                                         <span class="badge bg-warning text-dark">Pendiente</span>
                                     @elseif($exhumacion->estado_exhumacion == 'rechazada')
                                         <span class="badge bg-danger">Rechazada</span>
-                                    @elseif($exhumacion->estado_exhumacion == 'completada')
-                                        <span class="badge bg-primary">Completada</span>
                                     @else
                                         <span class="badge bg-secondary">{{ $exhumacion->estado_exhumacion }}</span>
                                     @endif

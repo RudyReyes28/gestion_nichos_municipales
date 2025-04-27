@@ -66,7 +66,11 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($contrato->tipo_ocupante == 'Personaje Historico')
+                                    @if(in_array($contrato->id_contrato, $idExhumacionesContrato))
+                                        <button type="button" class="btn btn-sm btn-secondary mb-1" disabled title="Ya ha solicitado una exhumación para este contrato">
+                                            <i class="fas fa-check"></i> Solicitud Enviada
+                                        </button>
+                                    @elseif($contrato->tipo_ocupante == 'Personaje Historico')
                                         <button type="button" class="btn btn-sm btn-danger mb-1" disabled title="No se permite la exhumación de Personajes Históricos">
                                             <i class="fas fa-ban"></i> Exhumación no permitida
                                         </button>

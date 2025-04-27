@@ -180,7 +180,6 @@
 
 @endsection
 @section('scripts')
-<!-- Incluir html2canvas para convertir HTML a imagen -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -188,13 +187,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('btn-generar-boleta').addEventListener('click', function(e) {
         e.preventDefault();
         
-        // Mostrar spinner mientras se genera la imagen
+        
         const btnGenerarBoleta = document.getElementById('btn-generar-boleta');
         const btnTextOriginal = btnGenerarBoleta.innerHTML;
         btnGenerarBoleta.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando boleta...';
         btnGenerarBoleta.disabled = true;
         
-        // Capturar el contenido como imagen
+        
         html2canvas(document.getElementById('boleta-content'), {
             scale: 2, // Mejor calidad
             useCORS: true,

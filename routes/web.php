@@ -9,6 +9,7 @@ use App\Http\Controllers\usuario\MisNichosController;
 use App\Http\Controllers\usuario\MiPerfilController;
 use App\Http\Controllers\admin\BoletaPagoController;
 use App\Http\Controllers\usuario\ExhumacionController;
+use App\Http\Controllers\admin\GestionExhumacionController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -41,3 +42,7 @@ Route::get('/admin/contratos/generar_boleta/{id}', [ContratoController::class, '
 Route::post('/admin/contratos/generar_boleta', [ContratoController::class, 'aceptarContrato']) ->name('admin.contratos.aceptar_contrato');
 Route::get('/admin/boleta_pago', [BoletaPagoController::class, 'index']) ->name('admin.boleta_pago');
 Route::get('/admin/boleta_pago/aceptar_pago/{id_boleta}', [BoletaPagoController::class, 'aceptarPagoBoleta']) ->name('admin.boleta_pago.aceptar_pago');
+Route::get('/admin/exhumacion', [GestionExhumacionController::class, 'index']) ->name('admin.gestion_exhumacion');
+Route::get('/admin/exhumacion/ver_exhumaciones', [GestionExhumacionController::class, 'verTodasExhumaciones']) ->name('admin.gestion_exhumacion.ver_exhumaciones');
+Route::get('/admin/exhumacion/aceptar/{id_exhumacion}', [GestionExhumacionController::class, 'aceptarExhumacion']) ->name('admin.gestion_exhumacion.aceptar');
+Route::get('/admin/exhumacion/rechazar/{id_exhumacion}', [GestionExhumacionController::class, 'rechazarExhumacion']) ->name('admin.gestion_exhumacion.rechazar');

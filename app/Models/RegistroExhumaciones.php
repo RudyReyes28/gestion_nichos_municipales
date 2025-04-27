@@ -59,4 +59,24 @@ class RegistroExhumaciones extends Model
         return DB::select('SELECT * FROM vista_contratos_exhumacion WHERE estado_exhumacion = ?', [$estado]);
     }
 
+    public static function aceptarExhumacion($id_exhumacion)
+    {
+        try{
+            DB::statement('CALL actualizarEstadoExhumacion(?, ?)', [$id_exhumacion, 'aceptada']);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
+
+    public static function rechazarExhumacion($id_exhumacion)
+    {
+        try{
+            DB::statement('CALL actualizarEstadoExhumacion(?, ?)', [$id_exhumacion, 'rechazada']);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
+    }
+
 }

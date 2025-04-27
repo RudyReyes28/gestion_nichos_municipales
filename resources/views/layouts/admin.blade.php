@@ -159,12 +159,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.gestion_exhumacion') }}"
+                                class="nav-link {{ request()->routeIs('admin.gestion_exhumacion*') ? 'active' : '' }}">
                                 <i class="fas fa-exchange-alt"></i>
                                 Gestión de Exhumaciones
                             </a>
-                        </li>
-                        <li class="nav-item">
+                        </li>    <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-user"></i>
                                 Mi Perfil

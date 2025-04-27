@@ -269,3 +269,42 @@ LEFT JOIN AVENIDA a ON ub.id_avenida = a.id_avenida
 JOIN registro_exhumaciones ex ON cn.id_contrato = ex.id_contrato;
 
 SELECT * FROM vista_contratos_exhumacion;
+
+DELIMITER $$
+
+CREATE PROCEDURE actualizarEstadoExhumacion(
+    IN p_id_exhumacion INT,
+    IN p_estado_exhumacion VARCHAR(20)
+)
+BEGIN
+    DECLARE v_id_contrato INT;
+    DECLARE v_id_nicho INT;
+
+    -- 1. Actualizar el estado en REGISTRO_EXHUMACIONES
+    UPDATE registro_exhumaciones
+    SET estado = p_estado_exhumacion
+    WHERE id_exhumacion = p_id_exhumacion;
+
+    -- 2. Obtener id_contrato desde REGISTRO_EXHUMACIONES
+    SELECT id_contrato INTO v_id_contrato
+    FROM registro_exhumaciones
+    WHERE id_exhumacion = p_id_exhumacion;
+
+    -- 3. Actualizar estado_contrato a 'exhumacion' en CONTRATO_NICHO
+    UPDATE contrato_nicho
+    SET estado_contrato = 'exhumacion'
+    WHERE id_contrato = v_id_contrato;
+
+    -- 4. Obtener id_nicho desde CONTRATO_NICHO
+    SELECT id_nicho INTO v_id_nicho
+    FROM contrato_nicho
+    WHERE id_contrato = v_id_contrato;
+
+    -- 5. Actualizar estado del nicho a 'disponible'
+    UPDATE nichos
+    SET estado = 'disponible'
+    WHERE id_nicho = v_id_nicho;
+    
+END $$
+
+DELIMITER ;
