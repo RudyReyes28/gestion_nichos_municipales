@@ -147,6 +147,7 @@
                                 <i class="fas fa-receipt"></i>
                                 Gestión de Boletas
                                 </a>
+                        </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.gestion_usuarios') }}"
                                         class="nav-link {{ request()->routeIs('admin.gestion_usuarios*') ? 'active' : '' }}">
@@ -155,11 +156,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-chart-bar"></i>
-                                Gestión de Reportes
-                            </a>
-                        </li>
+                                    <a href="{{ route('admin.gestion_reportes') }}"
+                                        class="nav-link {{ request()->routeIs('admin.gestion_reportes*') ? 'active' : '' }}">
+                                        <i class="fas fa-chart-bar"></i>
+                                        Gestión de Reportes
+                                    </a>
+                                </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.gestion_exhumacion') }}"
                                 class="nav-link {{ request()->routeIs('admin.gestion_exhumacion*') ? 'active' : '' }}">
@@ -168,7 +170,7 @@
                             </a>
                         </li>    <li class="nav-item">
                             <a href="{{route('admin.mi_perfil')}}" 
-                                class="nav-link {{ request()->routeIs('admin.mi_perfil*')? 'active': '' }}" >
+                                class="nav-link {{ request()->routeIs('admin.mi_perfil*') ? 'active' : '' }}" >
                                 <i class="fas fa-user"></i>
                                 Mi Perfil
                             </a>

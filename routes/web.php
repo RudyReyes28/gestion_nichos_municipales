@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\GestionExhumacionController;
 use App\Http\Controllers\admin\GestionUsuariosController;
 use App\Http\Controllers\admin\GestionNichosController;
 use App\Http\Controllers\admin\MiAdminPerfilController;
+use App\Http\Controllers\admin\ReportesController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -63,3 +64,4 @@ Route::post('/admin/gestion_usuarios/gestionar_usuarios/crear_usuario', [Gestion
 Route::get('/admin/gestion_nichos', [GestionNichosController::class, 'index']) ->name('admin.gestion_nichos');
 Route::post('/admin/gestion_nichos/crear_nicho', [GestionNichosController::class, 'crearNicho']) ->name('admin.gestion_nichos.crear_nicho');
 Route::get('/admin/mi_perfil', [MiAdminPerfilController::class, 'index']) ->name('admin.mi_perfil');
+Route::get('/admin/gestion_reportes', [ReportesController::class, 'index'])->name('admin.gestion_reportes');
