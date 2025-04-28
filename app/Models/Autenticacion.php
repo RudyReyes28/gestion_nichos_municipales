@@ -48,7 +48,7 @@ class Autenticacion extends Model
         return DB::select('SELECT * FROM tipo_usuario');
     }
 
-    public static function activiarUsuario($id_autenticacion){
+    public static function activarUsuario($id_autenticacion){
         return DB::update('UPDATE autenticacion SET estado = ? WHERE id_autenticacion = ?', ['activo', $id_autenticacion]);
     }
 

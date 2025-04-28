@@ -145,14 +145,15 @@
                                 class="nav-link {{ request()->routeIs('admin.boleta_pago*') ? 'active' : '' }}">
                                 <i class="fas fa-receipt"></i>
                                 Gestión de Boletas
-                            </a>
-                        </li>  <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-users-cog"></i>
-                                Gestión de Usuarios
-                            </a>
-                        </li>
-                        <li class="nav-item">
+                                </a>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.gestion_usuarios') }}"
+                                        class="nav-link {{ request()->routeIs('admin.gestion_usuarios*') ? 'active' : '' }}">
+                                        <i class="fas fa-users-cog"></i>
+                                        Gestión de Usuarios
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-chart-bar"></i>
                                 Gestión de Reportes

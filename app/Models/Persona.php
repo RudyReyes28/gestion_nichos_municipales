@@ -80,4 +80,19 @@ class Persona extends Model
     {
         return DB::select('SELECT * FROM vista_personas_completa WHERE id_persona = ?', [$id_persona]);
     }
+
+    public static function createDireccionPersona($id_municipio, $descripcion_direccion)
+    {
+        $succes = DB::insert('INSERT INTO direccion (id_municipio, descripcion) VALUES (?, ?)', [$id_municipio, $descripcion_direccion]);
+        if ($succes){
+            return DB::getPdo()->lastInsertId();
+        }else{
+            return null;
+        }
+    }
+
+    public static function updateDireccionPersona($id_direccion, $id_municipio, $descripcion_direccion)
+    {
+        return DB::update('UPDATE direccion SET id_municipio = ?, descripcion = ? WHERE id_direccion = ?', [$id_municipio, $descripcion_direccion, $id_direccion]);
+    }
 }

@@ -10,21 +10,22 @@ use App\Models\Ocupante;
 use App\Models\TiposCausaMuerte;
 use App\Models\TipoOcupante;
 use App\Models\Municipio;
+use App\Models\Departamento;
 use App\Models\Persona;
 class GestionUsuariosController extends Controller
 {
     //
     public function index(){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
 
         $id_autenticacion = session()->get('id_autenticacion');
         $id_persona = session()->get('id_persona');
-        $persona = Autenticacion::getPersonaById($id_persona);
+        $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
         //Obtener todos los ocupantes 
-        $ocupantes = Ocupante::getAllOcupantes();
+        $ocupantes = Ocupante::allOcupante();
         //Obtener todos los responsables
         $responsables = ContratoNicho::getResponsables();
         // obtener usuarios autenticados
@@ -35,13 +36,13 @@ class GestionUsuariosController extends Controller
     }
 
     public function gestionarOcupantes(){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
 
         $id_autenticacion = session()->get('id_autenticacion');
         $id_persona = session()->get('id_persona');
-        $persona = Autenticacion::getPersonaById($id_persona);
+        $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
         
         //Obtener toda la informacion posible de los ocupantes
@@ -54,14 +55,17 @@ class GestionUsuariosController extends Controller
 
         //obtener direccion-municipios con sus departamentos
         $municipios = Municipio::allMunicipioWithDepartamentos();
+        //obtener todos los departamentos
+        $departamentos = Departamento::allDepartamentos();
 
-        return view('admin.gestion_ocupantes', compact('persona', 'ocupantes', 'tipos_muerte', 'tipos_ocupante', 'municipios'));
+        return view('admin.gestion_ocupantes', compact('persona', 'ocupantes', 'tipos_muerte', 'tipos_ocupante', 'municipios', 'departamentos'));
     }
 
-    public function editarOcupantes(Request $request){
-        if(!session()->has('id_autenticacion))')){
+    public function editarOcupante(Request $request){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
+        //dd($request->all());
 
         //editar persona
         $id_persona = $request->input('id_persona');
@@ -75,10 +79,27 @@ class GestionUsuariosController extends Controller
         $telefono = $request->input('telefono');
         $correo = $request->input('correo');
         $id_direccion = $request->input('id_direccion');
-        if($id_contacto != null){
+        $id_municipio = $request->input('id_municipio');
+        $descripcion_direccion = $request->input('descripcion_direccion');
+        if($id_direccion != null){
+            $success = Persona::updateDireccionPersona($id_direccion, $id_municipio, $descripcion_direccion);
+        }else{
+            if($id_persona != null && $id_municipio != null){
+                $id_direccion = Persona::createDireccionPersona( $id_municipio, $descripcion_direccion);
+            }
+        }
+
+        if($id_contacto != null ){
             $success = Persona::updateContactoPersona($id_contacto, $telefono, $correo, $id_direccion);
         }else{
-            Persona::createContactoPersona($id_persona, $telefono, $correo, $id_direccion);
+            
+            if($id_persona != null && $id_direccion != null){
+                $creado = Persona::createContactoPersona($id_persona, $telefono, $correo, $id_direccion);
+                if($creado){
+                    $success =+1;
+                }
+            }
+                
         }
 
         //editar ocupante
@@ -88,22 +109,20 @@ class GestionUsuariosController extends Controller
         $id_tipo_ocupante = $request->input('id_tipo_ocupante');
         $success= Ocupante::updateOcupante($id_ocupante, $id_persona, $fecha_fallecimiento, $id_tipo_muerte, $id_tipo_ocupante);
 
-        if($success){
-            return redirect()->route('admin.gestion_ocupantes')->with('success', 'Ocupante editado correctamente');
-        }else{
-            return redirect()->route('admin.gestion_ocupantes')->with('error', 'Error al editar el ocupante');
-        }
+        
+        return redirect()->route('admin.gestion_ocupantes')->with('success', 'Ocupante editado correctamente');
+        
 
     }
 
     public function gestionarResponsables(){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
 
         $id_autenticacion = session()->get('id_autenticacion');
         $id_persona = session()->get('id_persona');
-        $persona = Autenticacion::getPersonaById($id_persona);
+        $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
         
         $responsables = ContratoNicho::getAllInfoResponsables();
@@ -111,14 +130,19 @@ class GestionUsuariosController extends Controller
         //obtener direccion-municipios con sus departamentos
         $municipios = Municipio::allMunicipioWithDepartamentos();
 
-        return view('admin.gestion_responsables', compact('persona', 'responsables', 'municipios'));
+        //obtener todos los departamentos
+        $departamentos = Departamento::allDepartamentos();
+
+        return view('admin.gestion_responsables', compact('persona', 'responsables', 'municipios', 'departamentos'));
 
     }
 
     public function editarResponsable(Request $request){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
+
+        //dd($request->all());
 
 
         //editar persona
@@ -133,10 +157,27 @@ class GestionUsuariosController extends Controller
         $telefono = $request->input('telefono');
         $correo = $request->input('correo');
         $id_direccion = $request->input('id_direccion');
-        if($id_contacto != null){
-            Persona::updateContactoPersona($id_contacto, $telefono, $correo, $id_direccion);
+        $id_municipio = $request->input('id_municipio');
+        $descripcion_direccion = $request->input('descripcion_direccion');
+        if($id_direccion != null){
+            $success += Persona::updateDireccionPersona($id_direccion, $id_municipio, $descripcion_direccion);
         }else{
-            Persona::createContactoPersona($id_persona, $telefono, $correo, $id_direccion);
+            if($id_persona != null && $id_municipio != null){
+                $id_direccion = Persona::createDireccionPersona( $id_municipio, $descripcion_direccion);
+            }
+        }
+
+        if($id_contacto != null ){
+            $success+= Persona::updateContactoPersona($id_contacto, $telefono, $correo, $id_direccion);
+        }else{
+            
+            if($id_persona != null && $id_direccion != null){
+                $creado = Persona::createContactoPersona($id_persona, $telefono, $correo, $id_direccion);
+                if($creado){
+                    $success+=1;
+                }
+            }
+                
         }
         
         if($success){
@@ -148,13 +189,13 @@ class GestionUsuariosController extends Controller
     }
 
     public function gestionarUsuariosAutenticados(){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
 
         $id_autenticacion = session()->get('id_autenticacion');
         $id_persona = session()->get('id_persona');
-        $persona = Autenticacion::getPersonaById($id_persona);
+        $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
         
         //obtener todos los usuarios autenticados
@@ -166,16 +207,18 @@ class GestionUsuariosController extends Controller
         //obtener municipios con departamentos
         $municipios = Municipio::allMunicipioWithDepartamentos();
 
-        return view('admin.gestion_usuarios_autenticados', compact('persona', 'usuarios'));
+        //obtener todos los departamentos
+        $departamentos = Departamento::allDepartamentos();
+
+        return view('admin.gestion_usuarios_autenticados', compact('persona', 'usuarios', 'tipos_usuario', 'municipios', 'departamentos'));
     }
 
     public function activarUsuario($id_usuario){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
 
 
-        
         $success = Autenticacion::activarUsuario($id_usuario);
 
         if($success){
@@ -186,7 +229,7 @@ class GestionUsuariosController extends Controller
     }
 
     public function eliminarUsuario($id_usuario){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
 
@@ -200,20 +243,24 @@ class GestionUsuariosController extends Controller
     }
 
     public function crearUsuario(Request $request){
-        if(!session()->has('id_autenticacion))')){
+        if(!session()->has('id_autenticacion')){
             return redirect()->route('login');
         }
-
+        //dd($request->all());
         //crear persona
         $nombre = $request->input('nombre');
         $apellido = $request->input('apellido');
         $dpi = $request->input('dpi');
         $id_persona = Persona::createPersona($nombre, $apellido, $dpi);
 
+        //crear direccion persona
+        $id_municipio = $request->input('id_municipio');
+        $descripcion_direccion = $request->input('descripcion_direccion');
+        $id_direccion = Persona::createDireccionPersona($id_municipio, $descripcion_direccion);
         //crear contacto persona
         $telefono = $request->input('telefono');
         $correo = $request->input('correo');
-        $id_direccion = $request->input('id_direccion');
+        
         if($id_persona){
             Persona::createContactoPersona($id_persona, $telefono, $correo, $id_direccion);
         }else{

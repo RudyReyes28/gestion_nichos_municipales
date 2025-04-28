@@ -10,6 +10,7 @@ use App\Http\Controllers\usuario\MiPerfilController;
 use App\Http\Controllers\admin\BoletaPagoController;
 use App\Http\Controllers\usuario\ExhumacionController;
 use App\Http\Controllers\admin\GestionExhumacionController;
+use App\Http\Controllers\admin\GestionUsuariosController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -46,3 +47,13 @@ Route::get('/admin/exhumacion', [GestionExhumacionController::class, 'index']) -
 Route::get('/admin/exhumacion/ver_exhumaciones', [GestionExhumacionController::class, 'verTodasExhumaciones']) ->name('admin.gestion_exhumacion.ver_exhumaciones');
 Route::get('/admin/exhumacion/aceptar/{id_exhumacion}', [GestionExhumacionController::class, 'aceptarExhumacion']) ->name('admin.gestion_exhumacion.aceptar');
 Route::get('/admin/exhumacion/rechazar/{id_exhumacion}', [GestionExhumacionController::class, 'rechazarExhumacion']) ->name('admin.gestion_exhumacion.rechazar');
+
+Route::get('/admin/gestion_usuarios', [GestionUsuariosController::class, 'index']) ->name('admin.gestion_usuarios');
+Route::get('/admin/gestion_usuarios/gestionar_ocupantes', [GestionUsuariosController::class, 'gestionarOcupantes']) ->name('admin.gestion_ocupantes');
+Route::post('/admin/gestion_usuarios/gestionar_ocupantes/editar_ocupante', [GestionUsuariosController::class, 'editarOcupante']) ->name('admin.gestion_ocupantes.editar_ocupante');
+Route::get('/admin/gestion_usuarios/gestionar_responsables', [GestionUsuariosController::class, 'gestionarResponsables']) ->name('admin.gestion_responsables');
+Route::post('/admin/gestion_usuarios/gestionar_responsables/editar_responsable', [GestionUsuariosController::class, 'editarResponsable']) ->name('admin.gestion_responsables.editar_responsable');
+Route::get('/admin/gestion_usuarios/gestionar_usuarios', [GestionUsuariosController::class, 'gestionarUsuariosAutenticados']) ->name('admin.gestion_usuarios_autenticados');
+Route::get('/admin/gestion_usuarios/gestionar_usuarios/activar_usuario/{id_usuario}', [GestionUsuariosController::class, 'activarUsuario']) ->name('admin.gestion_usuarios_autenticados.activar_usuario');
+Route::get('/admin/gestion_usuarios/gestionar_usuarios/desactivar_usuario/{id_usuario}', [GestionUsuariosController::class, 'eliminarUsuario']) ->name('admin.gestion_usuarios_autenticados.desactivar_usuario');
+Route::post('/admin/gestion_usuarios/gestionar_usuarios/crear_usuario', [GestionUsuariosController::class, 'crearUsuario']) ->name('admin.gestion_usuarios_autenticados.crear_usuario');
