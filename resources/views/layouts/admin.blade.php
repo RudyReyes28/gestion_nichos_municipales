@@ -129,7 +129,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('admin.gestion_nichos') }}" 
+                                class="nav-link {{ request()->routeIs('admin.gestion_nichos*') ? 'active' : '' }}">
                                 <i class="fas fa-monument"></i>
                                 Gestión de Nichos
                             </a>
@@ -166,7 +167,8 @@
                                 Gestión de Exhumaciones
                             </a>
                         </li>    <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('admin.mi_perfil')}}" 
+                                class="nav-link {{ request()->routeIs('admin.mi_perfil*')? 'active': '' }}" >
                                 <i class="fas fa-user"></i>
                                 Mi Perfil
                             </a>

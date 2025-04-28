@@ -13,5 +13,15 @@ class Avenida extends Model
     {
         return DB::select('SELECT * FROM avenida');
     }
+
+    public static function agregarAvenida($nombre_avenida)
+    {
+        $succes = DB::insert('INSERT INTO avenida (nombre_avenida) VALUES (?)', [$nombre_avenida]);
+        if ($succes) {
+            return DB::getPdo()->lastInsertId();
+        } else {
+            return null;
+        }
+    }
     //
 }

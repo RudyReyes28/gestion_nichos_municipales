@@ -424,4 +424,40 @@ FROM
     LEFT JOIN MUNICIPIO m ON d.id_municipio = m.id_municipio
     LEFT JOIN DEPARTAMENTO dept ON m.id_departamento = dept.id_departamento;
     
-SELECT * FROM vista_usuarios_autenticados;
+
+CREATE VIEW vista_nichos_completa AS
+SELECT 
+    n.id_nicho,
+    
+    -- Tipo de nicho
+    tn.id_tipo_nicho,
+    tn.nombre_tipo AS tipo_nicho,
+    
+    -- Datos del nicho
+    n.descripcion AS descripcion_nicho,
+    n.estado,
+    
+    -- Avenida
+    a.id_avenida,
+    a.nombre_avenida,
+    
+    -- Calle
+    c.id_calle,
+    c.nombre_calle,
+    
+    -- Ubicación
+    un.id_ubicacion_nicho,
+    un.descripcion AS descripcion_ubicacion
+
+FROM 
+    NICHOS n
+INNER JOIN 
+    TIPO_NICHO tn ON n.id_tipo_nicho = tn.id_tipo_nicho
+INNER JOIN 
+    UBICACION_NICHO un ON n.id_ubicacion_nicho = un.id_ubicacion_nicho
+LEFT JOIN 
+    AVENIDA a ON un.id_avenida = a.id_avenida
+LEFT JOIN 
+    CALLE c ON un.id_calle = c.id_calle;
+
+SELECT * FROM vista_nichos_completa;

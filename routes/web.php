@@ -11,6 +11,8 @@ use App\Http\Controllers\admin\BoletaPagoController;
 use App\Http\Controllers\usuario\ExhumacionController;
 use App\Http\Controllers\admin\GestionExhumacionController;
 use App\Http\Controllers\admin\GestionUsuariosController;
+use App\Http\Controllers\admin\GestionNichosController;
+use App\Http\Controllers\admin\MiAdminPerfilController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -57,3 +59,7 @@ Route::get('/admin/gestion_usuarios/gestionar_usuarios', [GestionUsuariosControl
 Route::get('/admin/gestion_usuarios/gestionar_usuarios/activar_usuario/{id_usuario}', [GestionUsuariosController::class, 'activarUsuario']) ->name('admin.gestion_usuarios_autenticados.activar_usuario');
 Route::get('/admin/gestion_usuarios/gestionar_usuarios/desactivar_usuario/{id_usuario}', [GestionUsuariosController::class, 'eliminarUsuario']) ->name('admin.gestion_usuarios_autenticados.desactivar_usuario');
 Route::post('/admin/gestion_usuarios/gestionar_usuarios/crear_usuario', [GestionUsuariosController::class, 'crearUsuario']) ->name('admin.gestion_usuarios_autenticados.crear_usuario');
+
+Route::get('/admin/gestion_nichos', [GestionNichosController::class, 'index']) ->name('admin.gestion_nichos');
+Route::post('/admin/gestion_nichos/crear_nicho', [GestionNichosController::class, 'crearNicho']) ->name('admin.gestion_nichos.crear_nicho');
+Route::get('/admin/mi_perfil', [MiAdminPerfilController::class, 'index']) ->name('admin.mi_perfil');

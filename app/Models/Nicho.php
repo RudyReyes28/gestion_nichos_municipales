@@ -106,4 +106,8 @@ class Nicho extends Model
         JOIN tipo_nicho tn ON n.id_tipo_nicho = tn.id_tipo_nicho WHERE n.estado = ?', [$estado]);
     }
 
+    public static function getViewNichos(){
+        return DB::select('SELECT * FROM vista_nichos_completa');
+    }
+
 }

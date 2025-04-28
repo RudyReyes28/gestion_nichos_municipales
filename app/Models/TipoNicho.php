@@ -8,4 +8,8 @@ class TipoNicho extends Model
 {
     protected $table = 'tipo_nicho';
     //
+    public static function getTipoNichos()
+    {
+        return TipoNicho::all();
+    }
 }
