@@ -162,14 +162,6 @@ CREATE TABLE AUDITORIA (
 
 
 
-SELECT * FROM vista_contratos_completa;
-
-SELECT * FROM vista_personas_completa;
-
-SELECT * FROM vista_contratos_completa WHERE estado_contrato = 'solicitado';
-
-SELECT * FROM vista_contratos_boletas;
-
 
 SELECT * FROM departamento;
 SELECT * FROM municipio;

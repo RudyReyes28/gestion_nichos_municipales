@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class ReportesController extends Controller
 {
     //
-    public function index(Request $request)
+    public function index()
     {
         if (!session()->has('id_autenticacion')) {
             return redirect()->route('login');
@@ -21,50 +21,76 @@ class ReportesController extends Controller
         $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
 
-        // Obtener datos para los reportes
-        $nichosData = Auditoria::getNichosOcupadosYDisponibles();
-        $nichosProximosVencer = Auditoria::getNichosProximosAVencer();
-        $contratosVigentesVencidos = Auditoria::getContratosVigentesYVencidos();
-        $nichosConPagosPendientes = Auditoria::getNichosConPagosPendientes();
-        $exhumacionesDetalles = Auditoria::getExhumacionesDetalles();
-        $dineroRecaudado = Auditoria::getDineroRecaudado();
-        $totalRecaudado = Auditoria::getTotalDineroRecaudado();
-        $contratosProximosVencer = Auditoria::getContratosProximosAVencer();
-        $contratosVencidos = Auditoria::getContratosVencidos();
-        
-        // Para el reporte de exhumaciones por período
-        $startDate = $request->input('start_date', Carbon::now()->subMonths(1)->format('Y-m-d'));
-        $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
-        $exhumacionesPeriodo = Auditoria::getExhumacionesPorPeriodo($startDate, $endDate);
-        
-        // Contar nichos ocupados y disponibles
+        // Obtener datos para todos los reportes
+        // 1. Nichos ocupados y disponibles
+        $nichosInfo = Auditoria::getNichosOcupadosYDisponibles();
         $nichosOcupados = 0;
         $nichosDisponibles = 0;
         
-        foreach ($nichosData as $nicho) {
-            if ($nicho->estado_nicho == 'ocupado') {
+        foreach ($nichosInfo as $nicho) {
+            if ($nicho->estado_nicho === 'ocupado') {
                 $nichosOcupados++;
             } else {
                 $nichosDisponibles++;
             }
         }
         
+        // 2. Contratos vigentes y vencidos
+        $contratos = Auditoria::getContratosVigentesYVencidos();
+        $contratosVigentes = 0;
+        $contratosVencidos = 0;
+        
+        foreach ($contratos as $contrato) {
+            if ($contrato->estado_contrato === 'activo') {
+                $contratosVigentes++;
+            } else if ($contrato->estado_contrato === 'vencido') {
+                $contratosVencidos++;
+            }
+        }
+        
+        // 3. Nichos con pagos pendientes
+        $nichosPagosPendientes = Auditoria::getNichosConPagosPendientes();
+        
+        // 4. Exhumaciones realizadas (últimos 30 días por defecto)
+        $startDate = date('Y-m-d', strtotime('-30 days'));
+        $endDate = date('Y-m-d');
+        $exhumacionesRecientes = Auditoria::getExhumacionesPorPeriodo($startDate, $endDate);
+        
+        // 5. Nichos próximos a vencer
+        $nichosProximosVencer = Auditoria::getNichosProximosAVencer();
+        
+        // 6. Dinero recaudado
+        $dineroRecaudado = Auditoria::getDineroRecaudado();
+        $totalDineroRecaudado = Auditoria::getTotalDineroRecaudado();
+        
+        // 7. Exhumaciones con detalles
+        $exhumacionesDetalles = Auditoria::getExhumacionesDetalles();
+        
+        // 8. Contratos próximos a vencer
+        $contratosProximosVencer = Auditoria::getContratosProximosAVencer();
+        
+        // 9. Contratos vencidos
+        $contratosVencidos = Auditoria::getContratosVencidos();
+
         return view('admin.gestion_reportes', compact(
             'persona',
             'nichosOcupados',
             'nichosDisponibles',
-            'nichosData',
-            'nichosProximosVencer',
-            'contratosVigentesVencidos',
-            'nichosConPagosPendientes',
-            'exhumacionesDetalles',
-            'dineroRecaudado',
-            'totalRecaudado',
-            'contratosProximosVencer',
+            'nichosInfo',
+            'contratosVigentes',
             'contratosVencidos',
-            'exhumacionesPeriodo',
+            'contratos',
+            'nichosPagosPendientes',
+            'exhumacionesRecientes',
+            'nichosProximosVencer',
+            'dineroRecaudado',
+            'totalDineroRecaudado',
+            'exhumacionesDetalles',
+            'contratosProximosVencer',
             'startDate',
             'endDate'
         ));
     }
+
+    
 }

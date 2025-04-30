@@ -19,6 +19,8 @@ class GestionAyudanteReportesController extends Controller
         $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
 
+        //todos los datos de los reportes
+
         return view('ayudante.reportes', compact('persona'));
     }
 }

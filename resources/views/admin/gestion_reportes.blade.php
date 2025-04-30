@@ -1,493 +1,597 @@
 @extends('layouts.admin')
 
-@section('titulo', 'Gestión de Reportes')
+@section('titulo')
+    Gestión de Reportes
+@endsection
 
-@section('titulo_seccion', 'Gestión de Reportes')
+@section('titulo_seccion')
+    Gestión de Reportes
+@endsection
 
 @section('estilos')
 <style>
     .card-dashboard {
-        border-left: 4px solid #3e6b89;
         transition: all 0.3s ease;
-        height: 100%;
+        border-left: 4px solid #3e6b89;
     }
     .card-dashboard:hover {
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
-    .stats-icon {
-        font-size: 2rem;
-        color: #3e6b89;
+    .card-counter {
+        padding: 20px;
+        background-color: #fff;
+        height: 100%;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: .3s linear all;
+        min-height: 120px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    .nav-tabs .nav-link {
-        color: #495057;
+    .card-counter.primary {
+        background-color: #3e6b89;
+        color: #FFF;
+    }
+    .card-counter.danger {
+        background-color: #ef5350;
+        color: #FFF;
+    }
+    .card-counter.success {
+        background-color: #66bb6a;
+        color: #FFF;
+    }
+    .card-counter.info {
+        background-color: #26c6da;
+        color: #FFF;
+    }
+    .card-counter.warning {
+        background-color: #ffa726;
+        color: #FFF;
+    }
+    .card-counter i {
+        font-size: 4em;
+        opacity: 0.3;
+    }
+    .card-counter .count-numbers {
+        position: absolute;
+        right: 35px;
+        top: 20px;
+        font-size: 32px;
+        display: block;
+        font-weight: 700;
+    }
+    .card-counter .count-name {
+        position: absolute;
+        right: 35px;
+        top: 65px;
+        font-style: italic;
+        text-transform: capitalize;
+        opacity: 0.7;
+        display: block;
+        font-size: 18px;
+    }
+    .tab-content {
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
     }
     .nav-tabs .nav-link.active {
-        color: #3e6b89;
         font-weight: bold;
-        border-bottom: 3px solid #3e6b89;
+        color: #3e6b89;
+        border-color: #dee2e6 #dee2e6 #fff;
     }
-    .table-responsive {
-        max-height: 400px;
-        overflow-y: auto;
+    .nav-tabs .nav-link:not(.active) {
+        color: #6c757d;
     }
-    .filter-container {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 20px;
+    .nav-tabs .nav-link:hover {
+        color: #3e6b89;
     }
 </style>
 @endsection
 
 @section('contenido')
-<div class="row mb-4">
-    <div class="col-md-4 mb-3">
-        <div class="card card-dashboard">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="card-title">Nichos Ocupados</h5>
-                        <h2 class="mb-0">{{ $nichosOcupados }}</h2>
-                    </div>
-                    <div class="stats-icon">
-                        <i class="fas fa-monument"></i>
-                    </div>
-                </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i> Este módulo permite visualizar reportes estadísticos y operativos del sistema de gestión de nichos.
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card card-dashboard">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="card-title">Nichos Disponibles</h5>
-                        <h2 class="mb-0">{{ $nichosDisponibles }}</h2>
-                    </div>
-                    <div class="stats-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                </div>
+
+    <!-- Tarjetas de Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter primary position-relative">
+                <i class="fas fa-monument position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorTotalNichos">{{ $nichosOcupados + $nichosDisponibles }}</span>
+                <span class="count-name">Total de Nichos</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter success position-relative">
+                <i class="fas fa-check-circle position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorNichosDisponibles">{{ $nichosDisponibles }}</span>
+                <span class="count-name">Nichos Disponibles</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter info position-relative">
+                <i class="fas fa-file-contract position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorContratosVigentes">{{ $contratosVigentes }}</span>
+                <span class="count-name">Contratos Vigentes</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter warning position-relative">
+                <i class="fas fa-exclamation-triangle position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorContratosVencer">{{ count($contratosProximosVencer) }}</span>
+                <span class="count-name">Contratos por Vencer</span>
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-3">
-        <div class="card card-dashboard">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="card-title">Total Recaudado</h5>
-                        <h2 class="mb-0">Q
-                            @if(!empty($totalRecaudado) && count($totalRecaudado) > 0)
-                                {{ number_format($totalRecaudado[0]->total_recaudado, 2) }}
-                            @else
-                                0.00
-                            @endif
-                        </h2>
-                    </div>
-                    <div class="stats-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter danger position-relative">
+                <i class="fas fa-times-circle position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorPagosPendientes">{{ count($nichosPagosPendientes) }}</span>
+                <span class="count-name">Pagos Pendientes</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter primary position-relative">
+                <i class="fas fa-exchange-alt position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorExhumaciones">{{ count($exhumacionesRecientes) }}</span>
+                <span class="count-name">Exhumaciones Recientes</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter success position-relative">
+                <i class="fas fa-dollar-sign position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorTotalRecaudado">{{ isset($totalDineroRecaudado[0]->total_recaudado) ? number_format($totalDineroRecaudado[0]->total_recaudado, 2) : '0.00' }}</span>
+                <span class="count-name">Total Recaudado</span>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 mb-4">
+            <div class="card-counter danger position-relative">
+                <i class="fas fa-calendar-times position-absolute start-0 top-50 translate-middle-y ms-4"></i>
+                <span class="count-numbers" id="contadorContratosVencidos">{{ count($contratosVencidos) }}</span>
+                <span class="count-name">Contratos Vencidos</span>
             </div>
         </div>
     </div>
-</div>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs" id="reportesTabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="nichos-tab" data-bs-toggle="tab" href="#nichos" role="tab">Nichos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="contratos-tab" data-bs-toggle="tab" href="#contratos" role="tab">Contratos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="pagos-tab" data-bs-toggle="tab" href="#pagos" role="tab">Pagos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="exhumaciones-tab" data-bs-toggle="tab" href="#exhumaciones" role="tab">Exhumaciones</a>
-            </li>
-        </ul>
-    </div>
-    <div class="card-body">
-        <div class="tab-content" id="reportesTabsContent">
-            <!-- Nichos Tab -->
-            <div class="tab-pane fade show active" id="nichos" role="tabpanel">
-                <h4 class="mb-3">Listado de Nichos</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Descripción</th>
-                                <th>Estado</th>
-                                <th>Tipo</th>
-                                <th>Ubicación</th>
-                                <th>Ubicación Detalle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($nichosData as $nicho)
-                            <tr>
-                                <td>{{ $nicho->id_nicho }}</td>
-                                <td>{{ $nicho->descripcion_nicho }}</td>
-                                <td>
-                                    @if($nicho->estado_nicho == 'ocupado')
-                                        <span class="badge bg-danger">Ocupado</span>
-                                    @else
-                                        <span class="badge bg-success">Disponible</span>
-                                    @endif
-                                </td>
-                                <td>{{ $nicho->tipo_nicho }}</td>
-                                <td>{{ $nicho->ubicacion }}</td>
-                                <td>{{ $nicho->ubicacion_detalle }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 class="mt-4 mb-3">Nichos Próximos a Vencer</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID Contrato</th>
-                                <th>Estado Contrato</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Descripción Nicho</th>
-                                <th>Estado Nicho</th>
-                                <th>Tipo Nicho</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($nichosProximosVencer as $nicho)
-                            <tr>
-                                <td>{{ $nicho->id_contrato }}</td>
-                                <td>{{ $nicho->estado_contrato }}</td>
-                                <td>{{ $nicho->fecha_inicio }}</td>
-                                <td>{{ $nicho->fecha_fin }}</td>
-                                <td>{{ $nicho->descripcion_nicho }}</td>
-                                <td>
-                                    @if($nicho->estado_nicho == 'ocupado')
-                                        <span class="badge bg-danger">Ocupado</span>
-                                    @else
-                                        <span class="badge bg-success">Disponible</span>
-                                    @endif
-                                </td>
-                                <td>{{ $nicho->tipo_nicho }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Contratos Tab -->
-            <div class="tab-pane fade" id="contratos" role="tabpanel">
-                <h4 class="mb-3">Contratos Vigentes y Vencidos</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID Contrato</th>
-                                <th>Estado</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Descripción Nicho</th>
-                                <th>Estado Nicho</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($contratosVigentesVencidos as $contrato)
-                            <tr>
-                                <td>{{ $contrato->id_contrato }}</td>
-                                <td>
-                                    @if($contrato->estado_contrato == 'activo')
-                                        <span class="badge bg-success">Vigente</span>
-                                    @elseif($contrato->estado_contrato == 'vencido')
-                                        <span class="badge bg-danger">Vencido</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $contrato->estado_contrato }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $contrato->fecha_inicio }}</td>
-                                <td>{{ $contrato->fecha_fin }}</td>
-                                <td>{{ $contrato->descripcion_nicho }}</td>
-                                <td>
-                                    @if($contrato->estado_nicho == 'ocupado')
-                                        <span class="badge bg-danger">Ocupado</span>
-                                    @else
-                                        <span class="badge bg-success">Disponible</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 class="mt-4 mb-3">Contratos Próximos a Vencer (30 días)</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID Contrato</th>
-                                <th>Estado</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Descripción Nicho</th>
-                                <th>Estado Nicho</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($contratosProximosVencer as $contrato)
-                            <tr>
-                                <td>{{ $contrato->id_contrato }}</td>
-                                <td>
-                                    @if($contrato->estado_contrato == 'activo')
-                                        <span class="badge bg-success">Vigente</span>
-                                    @elseif($contrato->estado_contrato == 'vencido')
-                                        <span class="badge bg-danger">Vencido</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $contrato->estado_contrato }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $contrato->fecha_inicio }}</td>
-                                <td>{{ $contrato->fecha_fin }}</td>
-                                <td>{{ $contrato->descripcion_nicho }}</td>
-                                <td>
-                                    @if($contrato->estado_nicho == 'ocupado')
-                                        <span class="badge bg-danger">Ocupado</span>
-                                    @else
-                                        <span class="badge bg-success">Disponible</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Pagos Tab -->
-            <div class="tab-pane fade" id="pagos" role="tabpanel">
-                <h4 class="mb-3">Nichos con Pagos Pendientes</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID Boleta</th>
-                                <th>Total</th>
-                                <th>Estado</th>
-                                <th>Fecha Emisión</th>
-                                <th>ID Contrato</th>
-                                <th>Descripción Nicho</th>
-                                <th>Estado Nicho</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($nichosConPagosPendientes as $pago)
-                            <tr>
-                                <td>{{ $pago->id_boleta }}</td>
-                                <td>Q{{ number_format($pago->total, 2) }}</td>
-                                <td>
-                                    <span class="badge bg-warning text-dark">Pendiente</span>
-                                </td>
-                                <td>{{ $pago->fecha_emision }}</td>
-                                <td>{{ $pago->id_contrato }}</td>
-                                <td>{{ $pago->descripcion_nicho }}</td>
-                                <td>
-                                    @if($pago->estado_nicho == 'ocupado')
-                                        <span class="badge bg-danger">Ocupado</span>
-                                    @else
-                                        <span class="badge bg-success">Disponible</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 class="mt-4 mb-3">Dinero Recaudado</h4>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div class="card card-dashboard">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Recaudado</h5>
-                                <h2 class="mb-0">Q
-                                    @if(!empty($totalRecaudado) && count($totalRecaudado) > 0)
-                                        {{ number_format($totalRecaudado[0]->total_recaudado, 2) }}
-                                    @else
-                                        0.00
-                                    @endif
-                                </h2>
+    <!-- Tabs para diferentes reportes -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="reportesTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="nichos-tab" data-bs-toggle="tab" data-bs-target="#nichos" type="button" role="tab">
+                        <i class="fas fa-monument me-2"></i>Nichos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="contratos-tab" data-bs-toggle="tab" data-bs-target="#contratos" type="button" role="tab">
+                        <i class="fas fa-file-contract me-2"></i>Contratos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pagos-tab" data-bs-toggle="tab" data-bs-target="#pagos" type="button" role="tab">
+                        <i class="fas fa-dollar-sign me-2"></i>Pagos
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="exhumaciones-tab" data-bs-toggle="tab" data-bs-target="#exhumaciones" type="button" role="tab">
+                        <i class="fas fa-exchange-alt me-2"></i>Exhumaciones
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="reportesTabsContent">
+                <!-- Tab Nichos -->
+                <div class="tab-pane fade show active" id="nichos" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-search me-2"></i>Nichos Disponibles</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Descripción</th>
+                                                    <th>Tipo</th>
+                                                    <th>Ubicación</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($nichosInfo as $nicho)
+                                                    @if($nicho->estado_nicho != 'ocupado')
+                                                        <tr>
+                                                            <td>{{ $nicho->id_nicho }}</td>
+                                                            <td>{{ $nicho->descripcion_nicho }}</td>
+                                                            <td>{{ $nicho->tipo_nicho }}</td>
+                                                            <td>{{ $nicho->ubicacion }}</td>
+                                                            <td>
+                                                                <span class="badge bg-success">Disponible</span>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-list me-2"></i>Listado de Nichos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover" id="tablaNichos">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Descripción</th>
+                                                    <th>Tipo</th>
+                                                    <th>Ubicación</th>
+                                                    <th>Detalle</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($nichosInfo as $nicho)
+                                                    <tr>
+                                                        <td>{{ $nicho->id_nicho }}</td>
+                                                        <td>{{ $nicho->descripcion_nicho }}</td>
+                                                        <td>{{ $nicho->tipo_nicho }}</td>
+                                                        <td>{{ $nicho->ubicacion }}</td>
+                                                        <td>{{ $nicho->ubicacion_detalle }}</td>
+                                                        <td>
+                                                            @if($nicho->estado_nicho == 'ocupado')
+                                                                <span class="badge bg-danger">Ocupado</span>
+                                                            @else
+                                                                <span class="badge bg-success">Disponible</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID Boleta</th>
-                                <th>Total</th>
-                                <th>Fecha Emisión</th>
-                                <th>Estado</th>
-                                <th>ID Contrato</th>
-                                <th>Estado Contrato</th>
-                                <th>Descripción Nicho</th>
-                                <th>Estado Nicho</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($dineroRecaudado as $pago)
-                            <tr>
-                                <td>{{ $pago->id_boleta }}</td>
-                                <td>Q{{ number_format($pago->total, 2) }}</td>
-                                <td>{{ $pago->fecha_emision }}</td>
-                                <td>
-                                    <span class="badge bg-success">Pagado</span>
-                                </td>
-                                <td>{{ $pago->id_contrato }}</td>
-                                <td>
-                                    @if($pago->estado_contrato == 'activo')
-                                        <span class="badge bg-success">Vigente</span>
-                                    @elseif($pago->estado_contrato == 'vencido')
-                                        <span class="badge bg-danger">Vencido</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $pago->estado_contrato }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $pago->descripcion_nicho }}</td>
-                                <td>
-                                    @if($pago->estado_nicho == 'ocupado')
-                                        <span class="badge bg-danger">Ocupado</span>
-                                    @else
-                                        <span class="badge bg-success">Disponible</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Exhumaciones Tab -->
-            <div class="tab-pane fade" id="exhumaciones" role="tabpanel">
-                <h4 class="mb-3">Exhumaciones por Período</h4>
-                <div class="filter-container">
-                    <form action="{{ route('admin.gestion_reportes') }}" method="GET" class="row align-items-end">
-                        <div class="col-md-4 mb-2">
-                            <label for="start_date" class="form-label">Fecha de Inicio</label>
-                            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ $startDate }}">
+                
+                <!-- Tab Contratos -->
+                <div class="tab-pane fade" id="contratos" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Contratos Próximos a Vencer</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nicho</th>
+                                                    <th>Inicio</th>
+                                                    <th>Vencimiento</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($contratosProximosVencer as $contrato)
+                                                    <tr>
+                                                        <td>{{ $contrato->id_contrato }}</td>
+                                                        <td>{{ $contrato->descripcion_nicho }}</td>
+                                                        <td>{{ $contrato->fecha_inicio }}</td>
+                                                        <td>{{ $contrato->fecha_fin }}</td>
+                                                        <td>
+                                                            <span class="badge bg-warning text-dark">Por Vencer</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <label for="end_date" class="form-label">Fecha de Fin</label>
-                            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $endDate }}">
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-list me-2"></i>Listado de Contratos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover" id="tablaContratos">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nicho</th>
+                                                    <th>Fecha Inicio</th>
+                                                    <th>Fecha Fin</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($contratos as $contrato)
+                                                    <tr>
+                                                        <td>{{ $contrato->id_contrato }}</td>
+                                                        <td>{{ $contrato->descripcion_nicho }}</td>
+                                                        <td>{{ $contrato->fecha_inicio }}</td>
+                                                        <td>{{ $contrato->fecha_fin }}</td>
+                                                        <td>
+                                                            @if($contrato->estado_contrato == 'vigente')
+                                                                <span class="badge bg-success">Vigente</span>
+                                                            @elseif($contrato->estado_contrato == 'vencido')
+                                                                <span class="badge bg-danger">Vencido</span>
+                                                            @else
+                                                                <span class="badge bg-secondary">{{ $contrato->estado_contrato }}</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-4 mb-2">
-                            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                    </div>
+                </div>
+                
+                <!-- Tab Pagos -->
+                <div class="tab-pane fade" id="pagos" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-exclamation-circle me-2"></i>Pagos Pendientes</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID Boleta</th>
+                                                    <th>Contrato</th>
+                                                    <th>Nicho</th>
+                                                    <th>Fecha Emisión</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($nichosPagosPendientes as $pago)
+                                                    <tr>
+                                                        <td>{{ $pago->id_boleta }}</td>
+                                                        <td>{{ $pago->id_contrato }}</td>
+                                                        <td>{{ $pago->descripcion_nicho }}</td>
+                                                        <td>{{ $pago->fecha_emision }}</td>
+                                                        <td>Q. {{ number_format($pago->total, 2) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i>Pagos Realizados</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover" id="tablaPagos">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID Boleta</th>
+                                                    <th>Contrato</th>
+                                                    <th>Nicho</th>
+                                                    <th>Fecha Emisión</th>
+                                                    <th>Total</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($dineroRecaudado as $pago)
+                                                    <tr>
+                                                        <td>{{ $pago->id_boleta }}</td>
+                                                        <td>{{ $pago->id_contrato }}</td>
+                                                        <td>{{ $pago->descripcion_nicho }}</td>
+                                                        <td>{{ $pago->fecha_emision }}</td>
+                                                        <td>Q. {{ number_format($pago->total, 2) }}</td>
+                                                        <td>
+                                                            <span class="badge bg-success">Pagado</span>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Fecha</th>
-                                <th>Solicitante</th>
-                                <th>Motivo</th>
-                                <th>Estado</th>
-                                <th>Nicho</th>
-                                <th>Contrato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($exhumacionesPeriodo as $exhum)
-                            <tr>
-                                <td>{{ $exhum->id_exhumacion }}</td>
-                                <td>{{ $exhum->fecha_exhumacion }}</td>
-                                <td>{{ $exhum->solicitante_nombre }} {{ $exhum->solicitante_apellido }}</td>
-                                <td>{{ $exhum->motivo }}</td>
-                                <td>
-                                    @if($exhum->estado_exhumacion == 'aceptada')
-                                        <span class="badge bg-success">Aprobada</span>
-                                    @elseif($exhum->estado_exhumacion == 'solicitado')
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    @elseif($exhum->estado_exhumacion == 'rechazada')
-                                        <span class="badge bg-danger">Rechazada</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $exhum->estado_exhumacion }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $exhum->descripcion_nicho }}</td>
-                                <td>{{ $exhum->id_contrato }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4 class="mt-4 mb-3">Registro de Exhumaciones</h4>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Fecha</th>
-                                <th>Solicitante</th>
-                                <th>Motivo</th>
-                                <th>Estado</th>
-                                <th>Nicho</th>
-                                <th>Contrato</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($exhumacionesDetalles as $exhum)
-                            <tr>
-                                <td>{{ $exhum->id_exhumacion }}</td>
-                                <td>{{ $exhum->fecha_exhumacion }}</td>
-                                <td>{{ $exhum->solicitante_nombre }} {{ $exhum->solicitante_apellido }}</td>
-                                <td>{{ $exhum->motivo }}</td>
-                                <td>
-                                    @if($exhum->estado_exhumacion == 'aprobada')
-                                        <span class="badge bg-success">Aprobada</span>
-                                    @elseif($exhum->estado_exhumacion == 'pendiente')
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    @elseif($exhum->estado_exhumacion == 'rechazada')
-                                        <span class="badge bg-danger">Rechazada</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ $exhum->estado_exhumacion }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $exhum->descripcion_nicho }}</td>
-                                <td>{{ $exhum->id_contrato }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                
+                <!-- Tab Exhumaciones -->
+                <div class="tab-pane fade" id="exhumaciones" role="tabpanel">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Exhumaciones Recientes</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Solicitante</th>
+                                                    <th>Fecha</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($exhumacionesRecientes as $exhumacion)
+                                                    <tr>
+                                                        <td>{{ $exhumacion->id_exhumacion }}</td>
+                                                        <td>{{ $exhumacion->solicitante_nombre }} {{ $exhumacion->solicitante_apellido }}</td>
+                                                        <td>{{ $exhumacion->fecha_exhumacion }}</td>
+                                                        <td>
+                                                            @if($exhumacion->estado_exhumacion == 'completada')
+                                                                <span class="badge bg-success">Completada</span>
+                                                            @elseif($exhumacion->estado_exhumacion == 'pendiente')
+                                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                                            @else
+                                                                <span class="badge bg-secondary">{{ $exhumacion->estado_exhumacion }}</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="fas fa-list-alt me-2"></i>Registro Completo de Exhumaciones</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover" id="tablaExhumaciones">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Solicitante</th>
+                                                    <th>Motivo</th>
+                                                    <th>Nicho</th>
+                                                    <th>Fecha</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($exhumacionesDetalles as $exhumacion)
+                                                    <tr>
+                                                        <td>{{ $exhumacion->id_exhumacion }}</td>
+                                                        <td>{{ $exhumacion->solicitante_nombre }} {{ $exhumacion->solicitante_apellido }}</td>
+                                                        <td>{{ $exhumacion->motivo }}</td>
+                                                        <td>{{ $exhumacion->descripcion_nicho }}</td>
+                                                        <td>{{ $exhumacion->fecha_exhumacion }}</td>
+                                                        <td>
+                                                            @if($exhumacion->estado_exhumacion == 'completada')
+                                                                <span class="badge bg-success">Completada</span>
+                                                            @elseif($exhumacion->estado_exhumacion == 'pendiente')
+                                                                <span class="badge bg-warning text-dark">Pendiente</span>
+                                                            @else
+                                                                <span class="badge bg-secondary">{{ $exhumacion->estado_exhumacion }}</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Activar los tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Manejo de tabs para mantener el estado al recargar
+    const triggerTabList = document.querySelectorAll('#reportesTabs button');
+    triggerTabList.forEach(triggerEl => {
+        triggerEl.addEventListener('click', function(event) {
+            // Guardar el tab seleccionado en localStorage
+            localStorage.setItem('activeReportTab', this.getAttribute('id'));
         });
     });
+
+    // Restaurar tab activo desde localStorage
+    const activeTabId = localStorage.getItem('activeReportTab');
+    if (activeTabId) {
+        const activeTab = document.querySelector('#' + activeTabId);
+        if (activeTab) {
+            const tab = new bootstrap.Tab(activeTab);
+            tab.show();
+        }
+    }
+
+    // Animación para tarjetas de estadísticas
+    $('.card-counter').each(function() {
+        const $this = $(this);
+        const countTo = parseInt($this.find('.count-numbers').text().replace(/,/g, ''));
+        
+        $({ countNum: 0 }).animate({
+            countNum: countTo
+        }, {
+            duration: 1000,
+            easing: 'swing',
+            step: function() {
+                if (isNaN(this.countNum)) {
+                    $this.find('.count-numbers').text('0');
+                } else {
+                    const formattedNumber = Math.floor(this.countNum).toLocaleString('es-GT');
+                    $this.find('.count-numbers').text(formattedNumber);
+                }
+            },
+            complete: function() {
+                const formattedNumber = Math.floor(this.countNum).toLocaleString('es-GT');
+                $this.find('.count-numbers').text(formattedNumber);
+            }
+        });
+    });
+
+    // Tooltips y popovers de Bootstrap
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
+});
 </script>
 @endsection

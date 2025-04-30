@@ -1,5 +1,5 @@
-<!-- resources/views/admin/contratos.blade.php -->
-@extends('layouts.admin')
+<!-- resources/views/ayudante/contratos.blade.php -->
+@extends('layouts.ayudante')
 
 @section('titulo', 'Gestión de Contratos')
 
@@ -37,7 +37,7 @@
 
     .badge-estado-contrato {
         background-color: cornflowerblue;
-        color:white;
+        color: white;
     }
 </style>
 @endsection
@@ -53,12 +53,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="btn-group mb-3" role="group">
-                            <a href="{{ route('admin.contratos') }}" class="btn {{ request()->query('estado') ? 'btn-outline-primary' : 'btn-primary' }}">Todos</a>
-                            <a href="{{ route('admin.contratos') }}?estado=solicitado" class="btn {{ request()->query('estado') == 'solicitado' ? 'btn-primary' : 'btn-outline-primary' }}">Solicitados</a>
-                            <a href="{{ route('admin.contratos') }}?estado=activo" class="btn {{ request()->query('estado') == 'activo' ? 'btn-primary' : 'btn-outline-primary' }}">Activo</a>
-                            <a href="{{ route('admin.contratos') }}?estado=exhumacion" class="btn {{ request()->query('estado') == 'exhumacion' ? 'btn-primary' : 'btn-outline-primary' }}">Exhumación</a>
-                            <a href="{{ route('admin.contratos') }}?estado=rechazado" class="btn {{ request()->query('estado') == 'rechazado' ? 'btn-primary' : 'btn-outline-primary' }}">Rechazados</a>
-                            <a href="{{ route('admin.contratos') }}?estado=vencido" class="btn {{ request()->query('estado') == 'vencido' ? 'btn-primary' : 'btn-outline-primary' }}">Vencidos</a>
+                            <a href="{{ route('ayudante.contratos') }}" class="btn {{ request()->query('estado') ? 'btn-outline-primary' : 'btn-primary' }}">Todos</a>
+                            <a href="{{ route('ayudante.contratos') }}?estado=solicitado" class="btn {{ request()->query('estado') == 'solicitado' ? 'btn-primary' : 'btn-outline-primary' }}">Solicitados</a>
+                            <a href="{{ route('ayudante.contratos') }}?estado=activo" class="btn {{ request()->query('estado') == 'activo' ? 'btn-primary' : 'btn-outline-primary' }}">Activo</a>
+                            <a href="{{ route('ayudante.contratos') }}?estado=exhumacion" class="btn {{ request()->query('estado') == 'exhumacion' ? 'btn-primary' : 'btn-outline-primary' }}">Exhumación</a>
+                            <a href="{{ route('ayudante.contratos') }}?estado=rechazado" class="btn {{ request()->query('estado') == 'rechazado' ? 'btn-primary' : 'btn-outline-primary' }}">Rechazados</a>
+                            <a href="{{ route('ayudante.contratos') }}?estado=vencido" class="btn {{ request()->query('estado') == 'vencido' ? 'btn-primary' : 'btn-outline-primary' }}">Vencidos</a>
                         </div>
                     </div>
                 </div>
@@ -115,17 +115,17 @@
                     
                     @if($contrato->estado_contrato == 'solicitado')
                     <div class="d-flex mt-3">
-                        <a href="{{ route('admin.contratos.generar_boleta', $contrato->id_contrato) }}" class="btn btn-success me-2">
+                        <a href="{{ route('ayudante.contratos.generar_boleta', $contrato->id_contrato) }}" class="btn btn-success me-2">
                             <i class="fas fa-check-circle me-1"></i> Aprobar y Generar Boleta
                         </a>
-                        <a href="{{ route('admin.contratos.rechazar', $contrato->id_contrato) }}" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea rechazar este contrato?')">
+                        <a href="{{ route('ayudante.contratos.rechazar', $contrato->id_contrato) }}" class="btn btn-danger" onclick="return confirm('¿Está seguro que desea rechazar este contrato?')">
                             <i class="fas fa-times-circle me-1"></i> Rechazar
                         </a>
                     </div>
                     @endif
                 </div>
                 <div class="card-footer text-muted">
-                    <small>Generado por: {{ $contrato->usuario_generador }} ({{ $contrato->tipo_usuario }})</small>
+                    <small>Generado por: {{ $persona->nombre }} (Ayudante)</small>
                 </div>
             </div>
         </div>
