@@ -3,17 +3,25 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AutenticacionController;
 use App\Http\Controllers\usuario\ServicioNichosController;
-use App\Http\Controllers\admin\ContratoController;
 use App\Http\Controllers\usuario\ServicioContratosController;
 use App\Http\Controllers\usuario\MisNichosController;
 use App\Http\Controllers\usuario\MiPerfilController;
-use App\Http\Controllers\admin\BoletaPagoController;
 use App\Http\Controllers\usuario\ExhumacionController;
+
+use App\Http\Controllers\admin\ContratoController;
+use App\Http\Controllers\admin\BoletaPagoController;
 use App\Http\Controllers\admin\GestionExhumacionController;
 use App\Http\Controllers\admin\GestionUsuariosController;
 use App\Http\Controllers\admin\GestionNichosController;
 use App\Http\Controllers\admin\MiAdminPerfilController;
 use App\Http\Controllers\admin\ReportesController;
+
+use App\Http\Controllers\ayudante\GestionAyudanteContratosController;
+use App\Http\Controllers\ayudante\GestionAyudanteNichosController;
+use App\Http\Controllers\ayudante\GestionAyudanteReportesController;
+use App\Http\Controllers\ayudante\GestionAyudanteUsuariosController;
+use App\Http\Controllers\ayudante\MiPerfilAyudanteController;
+
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -21,7 +29,6 @@ use App\Http\Controllers\admin\ReportesController;
 Route::get('/', [AutenticacionController::class, 'index']) ->name('login');
 Route::post('/', [AutenticacionController::class, 'autenticacion']) ->name('autenticacion');
 Route::get('/logout', [AutenticacionController::class, 'logout']) ->name('logout');
-Route::get('/ayudante/home', [AutenticacionController::class, 'goAyudanteHome']) ->name('ayudante.home');
 Route::get('/auditor/home', [AutenticacionController::class, 'goAuditorHome']) ->name('auditor.home');
 
 // Rutas para el usuario
@@ -65,3 +72,22 @@ Route::get('/admin/gestion_nichos', [GestionNichosController::class, 'index']) -
 Route::post('/admin/gestion_nichos/crear_nicho', [GestionNichosController::class, 'crearNicho']) ->name('admin.gestion_nichos.crear_nicho');
 Route::get('/admin/mi_perfil', [MiAdminPerfilController::class, 'index']) ->name('admin.mi_perfil');
 Route::get('/admin/gestion_reportes', [ReportesController::class, 'index'])->name('admin.gestion_reportes');
+
+// Rutas para el ayudante
+Route::get('/ayudante/home', [AutenticacionController::class, 'goAyudanteHome']) ->name('ayudante.home');
+Route::get('/ayudante/contratos', [GestionAyudanteContratosController::class, 'contratos']) ->name('ayudante.contratos');
+Route::get('/ayudante/contratos/rechazar/{id_contrato}', [GestionAyudanteContratosController::class, 'rechazarContrato']) ->name('ayudante.contratos.rechazar');
+Route::get('/ayudante/contratos/generar_boleta/{id_contrato}', [GestionAyudanteContratosController::class, 'generarBoleta']) ->name('ayudante.contratos.generar_boleta');
+Route::post('/ayudante/contratos/generar_boleta', [GestionAyudanteContratosController::class, 'aceptarContrato']) ->name('ayudante.contratos.aceptar_contrato');
+
+Route::get('/ayudante/gestion_nichos', [GestionAyudanteNichosController::class, 'index']) ->name('ayudante.gestion_nichos');
+Route::post('/ayudante/gestion_nichos/crear_nicho', [GestionAyudanteNichosController::class, 'crearNicho']) ->name('ayudante.gestion_nichos.crear_nicho');
+
+Route::get('/ayudante/gestion_usuarios', [GestionAyudanteUsuariosController::class, 'index'])->name('ayudante.gestion_usuarios');
+Route::get('/ayudante/gestion_usuarios/gestionar_ocupantes', [GestionAyudanteUsuariosController::class, 'gestionarOcupantes'])->name('ayudante.gestion_ocupantes');
+Route::post('/ayudante/gestion_usuarios/gestionar_ocupantes/editar_ocupante', [GestionAyudanteUsuariosController::class, 'editarOcupante'])->name('ayudante.gestion_ocupantes.editar_ocupante');
+Route::get('/ayudante/gestion_usuarios/gestionar_responsables', [GestionAyudanteUsuariosController::class, 'gestionarResponsables'])->name('ayudante.gestion_responsables');
+Route::post('/ayudante/gestion_usuarios/gestionar_responsables/editar_responsable', [GestionAyudanteUsuariosController::class, 'editarResponsable'])->name('ayudante.gestion_responsables.editar_responsable');
+
+Route::get('/ayudante/gestion_reportes', [GestionAyudanteReportesController::class, 'index'])->name('ayudante.gestion_reportes');
+Route::get('/ayudante/mi_perfil', [MiPerfilAyudanteController::class, 'index']) ->name('ayudante.mi_perfil');
