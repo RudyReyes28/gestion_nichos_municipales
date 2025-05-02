@@ -74,4 +74,8 @@ class BoletaPago extends Model
         }
     }
 
+    public static function totalPagosPendientesByResponsable($id_responsable){
+        return DB::select('SELECT SUM(total) as total FROM vista_contratos_boletas WHERE id_responsable = ? AND estado_boleta = ?', [$id_responsable, 'pago_pendiente']);
+    }
+
 }

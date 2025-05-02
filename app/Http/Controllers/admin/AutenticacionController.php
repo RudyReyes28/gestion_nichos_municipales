@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContratoNicho;
 use Illuminate\Http\Request;
 use App\Models\Autenticacion;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Session;
+use App\Models\Auditoria;
+use App\Models\BoletaPago;
 
 class AutenticacionController extends Controller
 {
@@ -33,7 +36,7 @@ class AutenticacionController extends Controller
                     case 2:
                         return redirect()->route('ayudante.home');
                     case 3:
-                        return redirect()->route('auditor.home');
+                        return redirect()->route('auditoria.home');
                     case 4:
                         return redirect()->route('usuario.home');
                     default:
@@ -79,7 +82,7 @@ class AutenticacionController extends Controller
         $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
 
-        return view('auditor.home', compact('persona'));
+        return view('auditoria.home', compact('persona'));
     }
     public function goUsuarioHome(){
         if (!Session::has('id_autenticacion')) {
@@ -90,7 +93,13 @@ class AutenticacionController extends Controller
         $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
 
-        return view('usuario.home', compact('persona'));
+        //algunos reportes 
+        $nichosDisponibles = Auditoria::getTotalNichosByEstado('disponible');
+        $misContratos =ContratoNicho::getAllInfoContratoNichoByResponsable($id_persona);
+        $pagosPendientes = BoletaPago::totalPagosPendientesByResponsable($id_persona);
+        $totalPagosPendientes = $pagosPendientes[0]->total ?? 0;
+
+        return view('usuario.home', compact('persona', 'nichosDisponibles', 'misContratos', 'totalPagosPendientes'));
     }
 
     public function logout()

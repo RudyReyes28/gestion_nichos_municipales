@@ -21,7 +21,7 @@
             <div class="card-body">
                 <h5 class="card-title"><i class="fas fa-exchange-alt text-success me-2"></i>Gestión de Exhumaciones</h5>
                 <p class="card-text">Administra las solicitudes de exhumación y su procesamiento.</p>
-                <a href="#" class="btn btn-success">Gestionar Exhumaciones</a>
+                <a href="{{route('admin.gestion_exhumacion')}}" class="btn btn-success">Gestionar Exhumaciones</a>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
             <div class="card-body">
                 <h5 class="card-title"><i class="fas fa-monument text-secondary me-2"></i>Gestión de Nichos</h5>
                 <p class="card-text">Gestiona los nichos disponibles, ocupados y sus detalles.</p>
-                <a href="#" class="btn btn-secondary">Gestionar Nichos</a>
+                <a href="{{ route('admin.gestion_nichos') }}" class="btn btn-secondary">Gestionar Nichos</a>
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="card-body">
                 <p>Revisa las boletas pendientes de pago.</p>
-                <a href="#" class="btn btn-outline-success">Ver Boletas</a>
+                <a href="{{ route('admin.boleta_pago') }}" class="btn btn-outline-success">Ver Boletas</a>
             </div>
         </div>
     </div>

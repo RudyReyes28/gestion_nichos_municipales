@@ -14,7 +14,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Nichos Disponibles</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">40</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $nichosDisponibles }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-monument fa-2x text-gray-300"></i>
@@ -31,7 +31,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Mis Contratos</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ count($misContratos) }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-file-contract fa-2x text-gray-300"></i>
@@ -48,7 +48,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                             Pagos Pendientes</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPagosPendientes }}</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -70,10 +70,10 @@
                     <a href="{{ route('usuario.nichos') }}" class="btn btn-primary mb-2">
                         <i class="fas fa-search me-2"></i>Consultar Nichos
                     </a>
-                    <a href="#" class="btn btn-secondary mb-2">
+                    <a href="{{ route('usuario.servicio_contratos') }}" class="btn btn-secondary mb-2">
                         <i class="fas fa-file-contract me-2"></i>Ver Mis Contratos
                     </a>
-                    <a href="#" class="btn btn-secondary">
+                    <a href="{{ route('usuario.servicio_contratos') }}" class="btn btn-secondary">
                         <i class="fas fa-money-bill me-2"></i>Realizar Pago
                     </a>
                 </div>
@@ -97,8 +97,8 @@
                     <strong>Fecha de Registro:</strong> {{ date('d/m/Y') }}
                 </div>
                 <div class="d-grid">
-                    <a href="#" class="btn btn-outline-primary">
-                        <i class="fas fa-user-edit me-2"></i>Editar Perfil
+                    <a href="{{ route('usuario.mi_perfil') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-edit me-2"></i>Ver Perfil
                     </a>
                 </div>
             </div>

@@ -265,5 +265,133 @@ class Auditoria extends Model
 
     }
 
+    // Obtener estadísticas de edad de los fallecidos
+    public static function getEstadisticasEdadFallecidos()
+    {
+        return DB::select(
+            "SELECT 
+            TIMESTAMPDIFF(YEAR, p.fecha_nacimiento, o.fecha_fallecimiento) AS edad,
+            COUNT(*) AS cantidad
+        FROM 
+            OCUPANTE o
+        INNER JOIN 
+            PERSONA p ON o.id_persona = p.id_persona
+        WHERE 
+            o.fecha_fallecimiento IS NOT NULL
+        GROUP BY 
+            edad
+        ORDER BY 
+            edad ASC"
+        );
+    }
+
+    // Obtener causas de muerte más comunes
+    public static function getCausasMuerteMasComunes()
+    {
+        return DB::select(
+            "SELECT 
+            t.nombre_causa,
+            COUNT(*) AS cantidad
+        FROM 
+            OCUPANTE o
+        INNER JOIN 
+            TIPOS_CAUSA_MUERTE t ON o.id_tipo_muerte = t.id_tipo_muerte
+        GROUP BY 
+            t.nombre_causa
+        ORDER BY 
+            cantidad DESC"
+        );
+    }
+
+    // Obtener estadísticas de ocupación por tipo de nicho
+    public static function getOcupacionPorTipoNicho()
+    {
+        return DB::select(
+            "SELECT 
+            tn.nombre_tipo,
+            COUNT(CASE WHEN n.estado = 'ocupado' THEN 1 END) AS ocupados,
+            COUNT(CASE WHEN n.estado = 'disponible' THEN 1 END) AS disponibles,
+            COUNT(*) AS total
+        FROM 
+            NICHOS n
+        INNER JOIN 
+            TIPO_NICHO tn ON n.id_tipo_nicho = tn.id_tipo_nicho
+        GROUP BY 
+            tn.nombre_tipo"
+        );
+    }
+
+    // Obtener tendencias de fallecimientos por mes y año
+    public static function getTendenciaFallecimientosPorMes()
+    {
+        return DB::select(
+            "SELECT 
+            YEAR(o.fecha_fallecimiento) AS anio,
+            MONTH(o.fecha_fallecimiento) AS mes,
+            COUNT(*) AS cantidad
+        FROM 
+            OCUPANTE o
+        WHERE 
+            o.fecha_fallecimiento IS NOT NULL
+        GROUP BY 
+            anio, mes
+        ORDER BY 
+            anio DESC, mes ASC"
+        );
+    }
+
+    // Obtener ingresos mensuales
+    public static function getIngresosMensuales()
+    {
+        return DB::select(
+            "SELECT 
+            YEAR(fecha_emision) AS anio,
+            MONTH(fecha_emision) AS mes,
+            SUM(total) AS ingreso_total
+        FROM 
+            BOLETA_PAGO
+        WHERE 
+            estado = 'pagado'
+        GROUP BY 
+            anio, mes
+        ORDER BY 
+            anio DESC, mes ASC"
+        );
+    }
+
+    // Obtener distribución de auditorías por tipo de problema
+    public static function getAuditoriasPorTipoProblema()
+    {
+        return DB::select(
+            "SELECT 
+            tipo_problema,
+            COUNT(*) AS cantidad
+        FROM 
+            AUDITORIA
+        GROUP BY 
+            tipo_problema
+        ORDER BY 
+            cantidad DESC"
+        );
+    }
+
+    // Obtener rendimiento de auditores (cantidad de auditorías realizadas)
+    public static function getRendimientoAuditores()
+    {
+        return DB::select(
+            "SELECT 
+            p.nombre,
+            p.apellido,
+            COUNT(*) AS auditorias_realizadas
+        FROM 
+            AUDITORIA a
+        INNER JOIN 
+            PERSONA p ON a.id_auditor = p.id_persona
+        GROUP BY 
+            p.id_persona
+        ORDER BY 
+            auditorias_realizadas DESC"
+        );
+    }
 
 }

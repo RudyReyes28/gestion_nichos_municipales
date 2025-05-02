@@ -22,6 +22,7 @@ use App\Http\Controllers\ayudante\GestionAyudanteReportesController;
 use App\Http\Controllers\ayudante\GestionAyudanteUsuariosController;
 use App\Http\Controllers\ayudante\MiPerfilAyudanteController;
 
+use App\Http\Controllers\auditor\AuditarReportesController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -29,7 +30,6 @@ use App\Http\Controllers\ayudante\MiPerfilAyudanteController;
 Route::get('/', [AutenticacionController::class, 'index']) ->name('login');
 Route::post('/', [AutenticacionController::class, 'autenticacion']) ->name('autenticacion');
 Route::get('/logout', [AutenticacionController::class, 'logout']) ->name('logout');
-Route::get('/auditor/home', [AutenticacionController::class, 'goAuditorHome']) ->name('auditor.home');
 
 // Rutas para el usuario
 Route::get('/usuario/home', [AutenticacionController::class, 'goUsuarioHome']) ->name('usuario.home');
@@ -91,3 +91,7 @@ Route::post('/ayudante/gestion_usuarios/gestionar_responsables/editar_responsabl
 
 Route::get('/ayudante/gestion_reportes', [GestionAyudanteReportesController::class, 'index'])->name('ayudante.gestion_reportes');
 Route::get('/ayudante/mi_perfil', [MiPerfilAyudanteController::class, 'index']) ->name('ayudante.mi_perfil');
+
+//Autoria
+Route::get('/auditoria/home', [AutenticacionController::class, 'goAuditorHome']) ->name('auditoria.home');
+Route::get('/auditoria/reportes', [AuditarReportesController::class, 'index'])->name('auditoria.reportes');
