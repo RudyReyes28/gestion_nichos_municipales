@@ -461,3 +461,94 @@ LEFT JOIN
     CALLE c ON un.id_calle = c.id_calle;
 
 SELECT * FROM vista_nichos_completa;
+
+
+DELIMITER //
+
+CREATE PROCEDURE renovar_contrato_nicho (
+    IN p_id_contrato INT,
+    IN p_ruta_comprobante VARCHAR(255)
+)
+BEGIN
+    DECLARE v_id_usuario INT;
+    DECLARE v_id_nicho INT;
+    DECLARE v_id_ocupante INT;
+    DECLARE v_id_responsable INT;
+    DECLARE v_fecha_inicio DATE;
+    DECLARE v_fecha_fin DATE;
+    DECLARE v_fecha_fin_nueva DATE;
+    DECLARE v_fecha_gracia_nueva DATE;
+
+    -- Obtener datos del contrato original
+    SELECT 
+        id_usuario_generador,
+        id_nicho,
+        id_ocupante,
+        id_responsable,
+        fecha_inicio,
+        fecha_fin
+    INTO 
+        v_id_usuario,
+        v_id_nicho,
+        v_id_ocupante,
+        v_id_responsable,
+        v_fecha_inicio,
+        v_fecha_fin
+    FROM CONTRATO_NICHO
+    WHERE id_contrato = p_id_contrato;
+
+    -- Calcular nuevas fechas
+    SET v_fecha_fin_nueva = DATE_ADD(v_fecha_fin, INTERVAL 6 YEAR);
+    SET v_fecha_gracia_nueva = DATE_ADD(v_fecha_fin_nueva, INTERVAL 1 YEAR);
+
+    -- Cambiar estado del contrato anterior
+    UPDATE CONTRATO_NICHO
+    SET estado_contrato = 'renovado'
+    WHERE id_contrato = p_id_contrato;
+
+    -- Insertar nuevo contrato
+    INSERT INTO CONTRATO_NICHO (
+        id_usuario_generador,
+        id_nicho,
+        id_ocupante,
+        id_responsable,
+        fecha_inicio,
+        fecha_fin,
+        fecha_gracia,
+        estado_contrato,
+        estado_pago
+    ) VALUES (
+        v_id_usuario,
+        v_id_nicho,
+        v_id_ocupante,
+        v_id_responsable,
+        v_fecha_inicio,
+        v_fecha_fin_nueva,
+        v_fecha_gracia_nueva,
+        'activo',
+        'pagado'
+    );
+
+    -- Obtener id del nuevo contrato
+    SET @nuevo_contrato_id = LAST_INSERT_ID();
+
+    -- Insertar boleta de pago
+    INSERT INTO BOLETA_PAGO (
+        id_contrato,
+        total,
+        estado,
+        ruta_comprobante,
+        fecha_emision
+    ) VALUES (
+        @nuevo_contrato_id,
+        600.00,
+        'pagado',
+        p_ruta_comprobante,
+        CURDATE()
+    );
+END //
+
+DELIMITER ;
+
+
+

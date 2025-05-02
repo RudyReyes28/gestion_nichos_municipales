@@ -69,6 +69,10 @@ class ContratoNicho extends Model
         return DB::select('SELECT * FROM vista_contratos_completa WHERE estado_contrato = ? OR estado_contrato = ?', ['activo', 'vencido']);
     }
 
+    public static function getAllInfoContratoNichoForExhumacionByResponsable($id_responsable){
+        return DB::select('SELECT * FROM vista_contratos_completa WHERE (estado_contrato = ? OR estado_contrato = ?) AND id_responsable = ?', ['activo', 'vencido', $id_responsable]);
+    }
+
     public static function getAllInfoContratoNichoByOcupante($id_ocupante)
     {
         return DB::select('SELECT * FROM vista_contratos_completa WHERE id_ocupante = ?', [$id_ocupante]);
@@ -104,6 +108,15 @@ class ContratoNicho extends Model
 
     public static function getAllInfoResponsables(){
         return DB::select('SELECT * FROM vista_responsables_completa');
+    }
+
+    public static function renovarContrato($id_contrato, $ruta_pago){
+        try{
+            DB::statement('CALL renovar_contrato_nicho(?, ?)', [$id_contrato, $ruta_pago]);
+            return true;
+        }catch(\Exception $e){
+            return false;
+        }
     }
 
 }

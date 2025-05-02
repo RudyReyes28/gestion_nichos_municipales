@@ -46,7 +46,8 @@ Route::get('/usuario/mi_perfil', [MiPerfilController::class, 'index']) ->name('u
 Route::get('/usuario/exhumacion', [ExhumacionController::class, 'index']) ->name('usuario.exhumacion');
 Route::post('/usuario/exhumacion', [ExhumacionController::class, 'registrarExhumacion']) ->name('usuario.registrar_exhumacion');
 Route::get('/usuario/exhumacion/mis_exhumaciones', [ExhumacionController::class, 'misExhumaciones']) ->name('usuario.mis_exhumaciones');
-
+Route::get('/usuario/renovar_contrato/{id_contrato}', [ServicioContratosController::class, 'renovarContrato']) ->name('usuario.renovar_contrato');
+Route::post('/usuario/renovar_contrato', [ServicioContratosController::class, 'aceptarRenovacionContrato']) ->name('usuario.aceptar_renovacion_contrato');
 
 // Rutas para el administrador
 Route::get('/admin/home', [AutenticacionController::class, 'goAdminHome']) ->name('admin.home');

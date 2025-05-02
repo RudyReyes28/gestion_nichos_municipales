@@ -66,7 +66,7 @@
                                         </button>
 
                                         @php
-            $boleta = collect($boletas)->firstWhere('id_contrato', $contrato->id_contrato);
+                                            $boleta = collect($boletas)->firstWhere('id_contrato', $contrato->id_contrato);
                                         @endphp
 
                                         @if($boleta)
@@ -79,6 +79,12 @@
                                             <i class="fas fa-money-bill-wave"></i>
                                         </a>
                                         @endif
+                                        @if ($contrato->estado_contrato=='activo' || $contrato->estado_contrato=='vencido')
+                                            <a href="{{ route('usuario.renovar_contrato', ['id_contrato' => $contrato->id_contrato]) }}" class="btn btn-sm btn-warning" onclick="return confirm('¿Está seguro que desea renovar este contrato?')">
+                                                <i class="fas fa-redo"></i>
+                                            </a>
+                                        @endif
+                                        
                                         @endif
                                     </div>
                                 </td>

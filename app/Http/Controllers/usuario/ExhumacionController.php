@@ -20,7 +20,7 @@ class ExhumacionController extends Controller
         $id_persona = session()->get('id_persona');
         $persona = Persona::getPersonaById($id_persona);
         $persona = $persona[0];
-        $misContratos= ContratoNicho::getAllInfoContratoNichoForExhumacion();
+        $misContratos= ContratoNicho::getAllInfoContratoNichoForExhumacionByResponsable($id_persona);
         $misExhumaciones= RegistroExhumaciones::getAllInfoExhumacionesByIdPersona($id_persona);
         $idExhumacionesContrato = [];
         foreach ($misExhumaciones as $exhumacion) {
