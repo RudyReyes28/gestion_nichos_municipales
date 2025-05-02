@@ -342,7 +342,7 @@
                                                         <td>{{ $contrato->fecha_inicio }}</td>
                                                         <td>{{ $contrato->fecha_fin }}</td>
                                                         <td>
-                                                            @if($contrato->estado_contrato == 'vigente')
+                                                            @if($contrato->estado_contrato == 'activo')
                                                                 <span class="badge bg-success">Vigente</span>
                                                             @elseif($contrato->estado_contrato == 'vencido')
                                                                 <span class="badge bg-danger">Vencido</span>
@@ -465,9 +465,9 @@
                                                         <td>{{ $exhumacion->solicitante_nombre }} {{ $exhumacion->solicitante_apellido }}</td>
                                                         <td>{{ $exhumacion->fecha_exhumacion }}</td>
                                                         <td>
-                                                            @if($exhumacion->estado_exhumacion == 'completada')
+                                                            @if($exhumacion->estado_exhumacion == 'aceptada')
                                                                 <span class="badge bg-success">Completada</span>
-                                                            @elseif($exhumacion->estado_exhumacion == 'pendiente')
+                                                            @elseif($exhumacion->estado_exhumacion == 'solicitado')
                                                                 <span class="badge bg-warning text-dark">Pendiente</span>
                                                             @else
                                                                 <span class="badge bg-secondary">{{ $exhumacion->estado_exhumacion }}</span>
@@ -510,9 +510,9 @@
                                                         <td>{{ $exhumacion->descripcion_nicho }}</td>
                                                         <td>{{ $exhumacion->fecha_exhumacion }}</td>
                                                         <td>
-                                                            @if($exhumacion->estado_exhumacion == 'completada')
+                                                            @if($exhumacion->estado_exhumacion == 'aceptada')
                                                                 <span class="badge bg-success">Completada</span>
-                                                            @elseif($exhumacion->estado_exhumacion == 'pendiente')
+                                                            @elseif($exhumacion->estado_exhumacion == 'solicitado')
                                                                 <span class="badge bg-warning text-dark">Pendiente</span>
                                                             @else
                                                                 <span class="badge bg-secondary">{{ $exhumacion->estado_exhumacion }}</span>

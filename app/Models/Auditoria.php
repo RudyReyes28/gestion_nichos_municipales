@@ -234,4 +234,36 @@ class Auditoria extends Model
     }
 
 
+    
+    public static function getTotalNichosByEstado($estado)
+    {
+        $total = DB::select(
+            "SELECT 
+            COUNT(*) AS total_nichos
+        FROM
+        nichos WHERE estado = ?",
+            [$estado]
+        );
+
+        return $total[0]->total_nichos;
+
+    }
+
+    public static function getTotalContratosByEstado($estado)
+    {
+        $total = DB::select(
+            "SELECT 
+            COUNT(*) AS total_contratos
+        FROM 
+            CONTRATO_NICHO
+        WHERE 
+            estado_contrato = ?",
+            [$estado]
+        );
+
+        return $total[0]->total_contratos;
+
+    }
+
+
 }

@@ -24,29 +24,17 @@ class ReportesController extends Controller
         // Obtener datos para todos los reportes
         // 1. Nichos ocupados y disponibles
         $nichosInfo = Auditoria::getNichosOcupadosYDisponibles();
-        $nichosOcupados = 0;
-        $nichosDisponibles = 0;
+        $nichosOcupados = Auditoria::getTotalNichosByEstado('ocupado');
+        $nichosDisponibles = Auditoria::getTotalNichosByEstado('disponible');
         
-        foreach ($nichosInfo as $nicho) {
-            if ($nicho->estado_nicho === 'ocupado') {
-                $nichosOcupados++;
-            } else {
-                $nichosDisponibles++;
-            }
-        }
+        
         
         // 2. Contratos vigentes y vencidos
         $contratos = Auditoria::getContratosVigentesYVencidos();
-        $contratosVigentes = 0;
-        $contratosVencidos = 0;
+        $contratosVigentes = Auditoria::getTotalContratosByEstado('activo');
+        $contratosVencidos = Auditoria::getTotalContratosByEstado('vencido');
         
-        foreach ($contratos as $contrato) {
-            if ($contrato->estado_contrato === 'activo') {
-                $contratosVigentes++;
-            } else if ($contrato->estado_contrato === 'vencido') {
-                $contratosVencidos++;
-            }
-        }
+        
         
         // 3. Nichos con pagos pendientes
         $nichosPagosPendientes = Auditoria::getNichosConPagosPendientes();
