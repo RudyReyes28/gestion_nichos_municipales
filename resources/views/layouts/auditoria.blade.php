@@ -121,7 +121,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-cog me-2"></i>Mi perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ route('auditoria.mi_perfil') }}"><i class="fas fa-user-cog me-2"></i>Mi perfil</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
                         </ul>
@@ -138,7 +138,7 @@
                 <div class="d-flex flex-column p-3">
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('auditoria.home') }}" class="nav-link {{ request()->is('auditoria/home') ? 'active' : '' }}">
                                 <i class="fas fa-home"></i>
                                 Inicio
                             </a>
@@ -151,21 +151,21 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link ">
+                            <a href="{{ route('auditoria.ver_auditorias') }}" class="nav-link {{ request()->is('auditoria/ver_auditorias') ? 'active' : '' }}">
                                 <i class="fas fa-list-alt"></i>
                                 Ver Auditorías
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#"
-                                class="nav-link ">
+                            <a href="{{ route('auditoria.auditar') }}"
+                                class="nav-link {{ request()->is('auditoria/auditar') ? 'active' : '' }}">
                                 <i class="fas fa-tasks"></i>
                                 Realizar Auditoría
                                 </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" 
-                                class="nav-link " >
+                            <a href="{{ route('auditoria.mi_perfil') }}" 
+                                class="nav-link {{ request()->is('auditoria/mi_perfil')?'active':'' }}" >
                                 <i class="fas fa-user"></i>
                                 Mi Perfil
                             </a>

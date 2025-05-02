@@ -303,7 +303,6 @@ class Auditoria extends Model
         );
     }
 
-    // Obtener estadísticas de ocupación por tipo de nicho
     public static function getOcupacionPorTipoNicho()
     {
         return DB::select(
@@ -321,7 +320,6 @@ class Auditoria extends Model
         );
     }
 
-    // Obtener tendencias de fallecimientos por mes y año
     public static function getTendenciaFallecimientosPorMes()
     {
         return DB::select(
@@ -340,7 +338,6 @@ class Auditoria extends Model
         );
     }
 
-    // Obtener ingresos mensuales
     public static function getIngresosMensuales()
     {
         return DB::select(
@@ -375,7 +372,6 @@ class Auditoria extends Model
         );
     }
 
-    // Obtener rendimiento de auditores (cantidad de auditorías realizadas)
     public static function getRendimientoAuditores()
     {
         return DB::select(
@@ -392,6 +388,73 @@ class Auditoria extends Model
         ORDER BY 
             auditorias_realizadas DESC"
         );
+    }
+
+
+    public static function crearAuditoria($id_contrato, $tipo_problema, $id_auditor, $detalles_auditoria)
+    {
+        return DB::insert(
+            "INSERT INTO AUDITORIA (id_contrato, tipo_problema, id_auditor, detalles_auditoria, estado) 
+            VALUES (?, ?, ?, ?, 'pendiente')",
+            [$id_contrato, $tipo_problema, $id_auditor, $detalles_auditoria]
+        );
+    }
+
+    public static function getAuditorias()
+    {
+        return DB::select(
+            "SELECT 
+            a.id_auditoria,
+            a.tipo_problema,
+            a.fecha_hora,
+            a.detalles_auditoria,
+            a.estado,
+            p.nombre AS auditor_nombre,
+            p.apellido AS auditor_apellido,
+            cn.id_contrato,
+            cn.fecha_inicio,
+            cn.fecha_fin,
+            n.descripcion AS descripcion_nicho
+        FROM 
+            AUDITORIA a
+        INNER JOIN 
+            PERSONA p ON a.id_auditor = p.id_persona
+        INNER JOIN 
+            CONTRATO_NICHO cn ON a.id_contrato = cn.id_contrato
+        INNER JOIN 
+            NICHOS n ON cn.id_nicho = n.id_nicho"
+        );
+
+    }
+
+    public static function getAuditoriasByIdPersona($id_persona)
+    {
+        return DB::select(
+            "SELECT 
+            a.id_auditoria,
+            a.tipo_problema,
+            a.fecha_hora,
+            a.detalles_auditoria,
+            a.estado,
+            p.nombre AS auditor_nombre,
+            p.apellido AS auditor_apellido,
+            cn.id_contrato,
+            cn.fecha_inicio,
+            cn.fecha_fin,
+            n.descripcion AS descripcion_nicho
+        FROM 
+            AUDITORIA a
+        INNER JOIN 
+            PERSONA p ON a.id_auditor = p.id_persona
+        INNER JOIN 
+            CONTRATO_NICHO cn ON a.id_contrato = cn.id_contrato
+        INNER JOIN 
+            NICHOS n ON cn.id_nicho = n.id_nicho
+        WHERE 
+            a.id_auditor = ?",
+            [$id_persona]
+        );
+
     }
 
 }

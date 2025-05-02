@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\auditor\MiPerfilAuditorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AutenticacionController;
 use App\Http\Controllers\usuario\ServicioNichosController;
@@ -23,6 +24,8 @@ use App\Http\Controllers\ayudante\GestionAyudanteUsuariosController;
 use App\Http\Controllers\ayudante\MiPerfilAyudanteController;
 
 use App\Http\Controllers\auditor\AuditarReportesController;
+use App\Http\Controllers\auditor\AuditarController;
+use App\Http\Controllers\auditor\MiAuditorPerfilController;
 
 /*Route::get('/', function () {
     return view('welcome');
@@ -95,3 +98,7 @@ Route::get('/ayudante/mi_perfil', [MiPerfilAyudanteController::class, 'index']) 
 //Autoria
 Route::get('/auditoria/home', [AutenticacionController::class, 'goAuditorHome']) ->name('auditoria.home');
 Route::get('/auditoria/reportes', [AuditarReportesController::class, 'index'])->name('auditoria.reportes');
+Route::get('/auditoria/auditar', [AuditarController::class, 'index'])->name('auditoria.auditar');
+Route::post('/auditoria/auditar/crear_auditoria', [AuditarController::class, 'crearAuditoria'])->name('auditoria.auditar.crear_auditoria');
+Route::get('/auditoria/ver_auditorias', [AuditarController::class, 'verTodasLasAuditorias'])->name('auditoria.ver_auditorias');
+Route::get('/auditoria/mi_perfil', [MiPerfilAuditorController::class, 'index']) ->name('auditoria.mi_perfil');

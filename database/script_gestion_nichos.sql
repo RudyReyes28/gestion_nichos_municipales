@@ -190,6 +190,7 @@ SELECT * FROM vista_contratos_completa WHERE estado_contrato = 'activo' OR estad
 
 
 
+
 -- Estados para la boleta de pago y contrato
 -- Nichos: ocupado, disponible, exhumacion
 -- Contrato: solicitado, rechazado, pago_pendiente, pago_realizado, activo, exhumacion, vencido, renovado
